@@ -1,0 +1,859 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://test.org/west.owl"
+         xmlns="http://test.org/west.owl#"
+         xmlns:swrl="http://www.w3.org/2003/11/swrl#">
+
+<owl:Ontology rdf:about="http://test.org/west.owl"/>
+
+<owl:ObjectProperty rdf:about="#hasAdj"/>
+
+<owl:ObjectProperty rdf:about="#hasAdv"/>
+
+<owl:ObjectProperty rdf:about="#hasObject"/>
+
+<owl:ObjectProperty rdf:about="#hasSubject"/>
+
+<owl:ObjectProperty rdf:about="#hasPrep"/>
+
+<owl:ObjectProperty rdf:about="#hasId"/>
+
+<owl:DatatypeProperty rdf:about="#hasDate"/>
+
+<owl:DatatypeProperty rdf:about="#hasPlace"/>
+
+<owl:DatatypeProperty rdf:about="#hasValue">
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#Id">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Verb">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Adjective">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Adverb">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Entity">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Preposition">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Be">
+  <rdfs:subClassOf rdf:resource="#Verb"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Colonel_West">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#American">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Hostile">
+  <rdfs:subClassOf rdf:resource="#Adjective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Nation">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Cuba">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Missile">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Weapon">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Sell">
+  <rdfs:subClassOf rdf:resource="#Verb"/>
+</owl:Class>
+
+<owl:Class rdf:about="#To">
+  <rdfs:subClassOf rdf:resource="#Preposition"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Criminal">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Nono">
+  <rdfs:subClassOf rdf:resource="#Entity"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Live">
+  <rdfs:subClassOf rdf:resource="#Verb"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Bear">
+  <rdfs:subClassOf rdf:resource="#Verb"/>
+</owl:Class>
+
+<owl:NamedIndividual rdf:about="#654318">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Be.654318">
+  <rdf:type rdf:resource="#Be"/>
+  <hasSubject rdf:resource="#Colonel_West.654318"/>
+  <hasObject rdf:resource="#American.654318"/>
+  <hasId rdf:resource="#654318"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.654318">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#American.654318">
+  <rdf:type rdf:resource="#American"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Hostile.44061">
+  <rdf:type rdf:resource="#Hostile"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Nation.44061">
+  <rdf:type rdf:resource="#Nation"/>
+  <hasAdj rdf:resource="#Hostile.44061"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#44061">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Be.44061">
+  <rdf:type rdf:resource="#Be"/>
+  <hasSubject rdf:resource="#Cuba.44061"/>
+  <hasObject rdf:resource="#Nation.44061"/>
+  <hasId rdf:resource="#44061"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Cuba.44061">
+  <rdf:type rdf:resource="#Cuba"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#728589">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Be.728589">
+  <rdf:type rdf:resource="#Be"/>
+  <hasSubject rdf:resource="#Missile.728589"/>
+  <hasObject rdf:resource="#Weapon.728589"/>
+  <hasId rdf:resource="#728589"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Missile.728589">
+  <rdf:type rdf:resource="#Missile"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Weapon.728589">
+  <rdf:type rdf:resource="#Weapon"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Sell.526023">
+  <rdf:type rdf:resource="#Sell"/>
+  <hasPrep rdf:resource="#To.526023"/>
+  <hasSubject rdf:resource="#Colonel_West.526023"/>
+  <hasObject rdf:resource="#Missile.526023"/>
+  <hasId rdf:resource="#526023"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#To.526023">
+  <rdf:type rdf:resource="#To"/>
+  <hasObject rdf:resource="#Cuba.526023"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.526023">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Missile.526023">
+  <rdf:type rdf:resource="#Missile"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#526023">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Cuba.526023">
+  <rdf:type rdf:resource="#Cuba"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#416824">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Be.416824">
+  <rdf:type rdf:resource="#Be"/>
+  <hasSubject rdf:resource="#Colonel_West.416824"/>
+  <hasObject rdf:resource="#American.416824"/>
+  <hasId rdf:resource="#416824"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.416824">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#American.416824">
+  <rdf:type rdf:resource="#American"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#761674">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Be.761674">
+  <rdf:type rdf:resource="#Be"/>
+  <hasSubject rdf:resource="#Colonel_West.761674"/>
+  <hasObject rdf:resource="#Criminal.761674"/>
+  <hasId rdf:resource="#761674"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.761674">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Criminal.761674">
+  <rdf:type rdf:resource="#Criminal"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Sell.848482">
+  <rdf:type rdf:resource="#Sell"/>
+  <hasPrep rdf:resource="#To.848482"/>
+  <hasSubject rdf:resource="#Colonel_West.848482"/>
+  <hasObject rdf:resource="#Missile.848482"/>
+  <hasId rdf:resource="#848482"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#To.848482">
+  <rdf:type rdf:resource="#To"/>
+  <hasObject rdf:resource="#Nono.848482"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.848482">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Missile.848482">
+  <rdf:type rdf:resource="#Missile"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#848482">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Nono.848482">
+  <rdf:type rdf:resource="#Nono"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#480806">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Live.480806">
+  <rdf:type rdf:resource="#Live"/>
+  <hasSubject rdf:resource="#Colonel_West.480806"/>
+  <hasId rdf:resource="#480806"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.480806">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#358509">
+  <rdf:type rdf:resource="#Id"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Bear.358509">
+  <rdf:type rdf:resource="#Bear"/>
+  <hasObject rdf:resource="#Colonel_West.358509"/>
+  <hasId rdf:resource="#358509"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Colonel_West.358509">
+  <rdf:type rdf:resource="#Colonel_West"/>
+</owl:NamedIndividual>
+
+<swrl:Variable rdf:about="urn:swrl#x"/>
+
+<swrl:Variable rdf:about="urn:swrl#x2"/>
+
+<swrl:Variable rdf:about="urn:swrl#x1"/>
+
+<swrl:Variable rdf:about="urn:swrl#x3"/>
+
+<swrl:Variable rdf:about="urn:swrl#e5"/>
+
+<swrl:Variable rdf:about="urn:swrl#x16"/>
+
+<swrl:Variable rdf:about="urn:swrl#x14"/>
+
+<swrl:Variable rdf:about="urn:swrl#x15"/>
+
+<swrl:Variable rdf:about="urn:swrl#x13"/>
+
+<swrl:Variable rdf:about="urn:swrl#x11"/>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Colonel_West"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:ClassAtom>
+              <swrl:classPredicate rdf:resource="#Criminal"/>
+              <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+            </swrl:ClassAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:ClassAtom>
+                      <swrl:classPredicate rdf:resource="#Adjective"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#x3"/>
+                    </swrl:ClassAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+          <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Colonel_West"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Criminal"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasPrep"/>
+          <swrl:argument1 rdf:resource="urn:swrl#e5"/>
+          <swrl:argument2 rdf:resource="urn:swrl#x16"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:ClassAtom>
+              <swrl:classPredicate rdf:resource="#To"/>
+              <swrl:argument1 rdf:resource="urn:swrl#x16"/>
+            </swrl:ClassAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasObject"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#x16"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#x14"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#x14"/>
+                      <swrl:argument2 rdf:resource="urn:swrl#x15"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <rdf:Description>
+                      <rdf:first>
+                        <swrl:ClassAtom>
+                          <swrl:classPredicate rdf:resource="#Hostile"/>
+                          <swrl:argument1 rdf:resource="urn:swrl#x15"/>
+                        </swrl:ClassAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <rdf:Description>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="#hasSubject"/>
+                              <swrl:argument1 rdf:resource="urn:swrl#e5"/>
+                              <swrl:argument2 rdf:resource="urn:swrl#x13"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <rdf:Description>
+                              <rdf:first>
+                                <swrl:IndividualPropertyAtom>
+                                  <swrl:propertyPredicate rdf:resource="#hasObject"/>
+                                  <swrl:argument1 rdf:resource="urn:swrl#e5"/>
+                                  <swrl:argument2 rdf:resource="urn:swrl#x11"/>
+                                </swrl:IndividualPropertyAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <rdf:Description>
+                                  <rdf:first>
+                                    <swrl:ClassAtom>
+                                      <swrl:classPredicate rdf:resource="#Sell"/>
+                                      <swrl:argument1 rdf:resource="urn:swrl#e5"/>
+                                    </swrl:ClassAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <rdf:Description>
+                                      <rdf:first>
+                                        <swrl:ClassAtom>
+                                          <swrl:classPredicate rdf:resource="#Nation"/>
+                                          <swrl:argument1 rdf:resource="urn:swrl#x14"/>
+                                        </swrl:ClassAtom>
+                                      </rdf:first>
+                                      <rdf:rest>
+                                        <rdf:Description>
+                                          <rdf:first>
+                                            <swrl:ClassAtom>
+                                              <swrl:classPredicate rdf:resource="#Weapon"/>
+                                              <swrl:argument1 rdf:resource="urn:swrl#x11"/>
+                                            </swrl:ClassAtom>
+                                          </rdf:first>
+                                          <rdf:rest>
+                                            <rdf:Description>
+                                              <rdf:first>
+                                                <swrl:ClassAtom>
+                                                  <swrl:classPredicate rdf:resource="#American"/>
+                                                  <swrl:argument1 rdf:resource="urn:swrl#x13"/>
+                                                </swrl:ClassAtom>
+                                              </rdf:first>
+                                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </rdf:Description>
+                                          </rdf:rest>
+                                        </rdf:Description>
+                                      </rdf:rest>
+                                    </rdf:Description>
+                                  </rdf:rest>
+                                </rdf:Description>
+                              </rdf:rest>
+                            </rdf:Description>
+                          </rdf:rest>
+                        </rdf:Description>
+                      </rdf:rest>
+                    </rdf:Description>
+                  </rdf:rest>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Criminal"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x13"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Missile"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:ClassAtom>
+              <swrl:classPredicate rdf:resource="#Weapon"/>
+              <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+            </swrl:ClassAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:ClassAtom>
+                      <swrl:classPredicate rdf:resource="#Adjective"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#x3"/>
+                    </swrl:ClassAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+          <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Missile"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Weapon"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Cuba"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:ClassAtom>
+              <swrl:classPredicate rdf:resource="#Nation"/>
+              <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+            </swrl:ClassAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:ClassAtom>
+                      <swrl:classPredicate rdf:resource="#Adjective"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#x3"/>
+                    </swrl:ClassAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+          <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Cuba"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Nation"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Colonel_West"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:ClassAtom>
+              <swrl:classPredicate rdf:resource="#American"/>
+              <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+            </swrl:ClassAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:ClassAtom>
+                      <swrl:classPredicate rdf:resource="#Adjective"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#x3"/>
+                    </swrl:ClassAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+          <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Colonel_West"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#American"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Colonel_West"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#American"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Colonel_West"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:ClassAtom>
+              <swrl:classPredicate rdf:resource="#American"/>
+              <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+            </swrl:ClassAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#x1"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:ClassAtom>
+                      <swrl:classPredicate rdf:resource="#Adjective"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#x3"/>
+                    </swrl:ClassAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasAdj"/>
+          <swrl:argument1 rdf:resource="urn:swrl#x2"/>
+          <swrl:argument2 rdf:resource="urn:swrl#x3"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+
+</rdf:RDF>
