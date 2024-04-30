@@ -1,9 +1,3 @@
-""" !pip install "transformers==4.34.0" "datasets==2.13.0" "peft==0.4.0" "accelerate==0.23.0" "bitsandbytes==0.41.1" "trl==0.4.7" "safetensors>=0.3.1" --upgrade
- """
- 
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # or "0,1" for multiple GPUs
-
 from random import randrange
 import pandas as pd
 import torch
@@ -13,32 +7,22 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 epoche = 50
 lr = 2e-3
 path_model = f"../models/finetuned/llama-sem2_{epoche}ep"
-# path_model_merged = f"../models/finetuned/llama-adcaspar_merged_{epoche}ep"
 
 print(f"\nEpoche: {epoche}\nLearning rate: {lr}\ndevice: {torch.cuda.current_device()}\n")
 
 df = pd.read_excel('dataset/train_sem_ext2.xlsx')
-df = df.fillna("")
 
 response_column = df['value'].tolist()
 instruction_column = df['sentence'].tolist()
 
-df['time'] = df['time'].astype(str)
-df['place'] = df['place'].astype(str)
-
-df['context'] = df['place'].astype(str) + " " + df['time'].astype(str)
-
-context_column = df['context'].tolist()
-
 # Create datasets
-dataset = [{'response': r, 'instruction': i, 'context': c} for r, i, c in zip(response_column, instruction_column, context_column)]
+dataset = [{'response': r, 'instruction': i} for r, i in zip(response_column, instruction_column)]
 
-sub_prompt = "Use the Input below to create a sentence in expressive english, which could have been used to generate the Input logical form. Consider Context if not empty."
+sub_prompt = "Use the Input below to create a sentence in expressive english, which could have been used to generate the Input logical form."
 
 
 def format_instruction(sample):
-	return f"""### Context: {sample['context']}
-### Instruction:
+	return f"""### Instruction:
 {sub_prompt}
 ### Input:
 {sample['response']}
@@ -138,9 +122,7 @@ trainer.save_model(path_model)
 print("\nFinetuning complete.")
 print(f"\nPath model: {path_model}\n")
 
-
-
-##### merging adapter weights into the base model ##### 
+##### merging adapter weights into the base model #####
 
 #from peft import AutoPeftModelForCausalLM
 

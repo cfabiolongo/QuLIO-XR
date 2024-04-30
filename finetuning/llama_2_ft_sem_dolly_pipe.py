@@ -1,6 +1,3 @@
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # or "0,1" for multiple GPUs
-
 import pandas as pd
 from transformers import AutoTokenizer, LlamaTokenizer
 from random import randrange
@@ -23,7 +20,7 @@ adapters_name_unified = f"../models/finetuned/llama-sem-dollywest"
 temp = 0.6
 comb_type = "linear"
 w1 = 0.7  # fol
-w2 = 0.3  # dolly
+w2 = 0.1  # dolly
 
 print("temp: ", temp)
 print("combination type: ", comb_type)
