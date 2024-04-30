@@ -31,7 +31,6 @@ q() >> [+FEED("Most of these therapeutic agents require intracellular uptake for
 +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Query",X), show_ct(), +REASON("TEST")]
 +PROCESS_STORED_MST("OK") / LISTEN("TEST") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule(), -LISTEN("TEST")]
 +PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), -REASON("TEST")]
-+QUESTION(X) >> [reset_ct(),  log("Query", X), assert_sequence(X), getcand(), tense_debt_paid(), show_ct()]
 
 
 +STT(X) / (WAKE("ON") & LISTEN("ON")) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), show_ct(), +ANSWER(X), Timer(W).start()]

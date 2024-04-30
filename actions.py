@@ -1,16 +1,13 @@
 from parse_en import *
+from nl_to_fol import *
+
 
 from phidias.Types import *
 import configparser
+import itertools
 from datetime import datetime
 from owlready2 import *
 
-
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-LOC_PREPS = str(config.get('QA', 'LOC_PREPS')).split(", ")
-TIME_PREPS = str(config.get('QA', 'TIME_PREPS')).split(", ")
 
 FILE_NAME = config.get('AGENT', 'FILE_NAME')
 
@@ -96,15 +93,6 @@ INCLUDE_ADJ_POS = config.getboolean('POS', 'INCLUDE_ADJ_POS')
 INCLUDE_PRP_POS = config.getboolean('POS', 'INCLUDE_PRP_POS')
 INCLUDE_ADV_POS = config.getboolean('POS', 'INCLUDE_ADV_POS')
 OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
-
-ROOT_TENSE_DEBT = str(config.get('QA', 'ROOT_TENSE_DEBT')).split(", ")
-
-# creating debt tenses dictionary
-tense_debt_voc = {}
-for rtd in ROOT_TENSE_DEBT:
-    couple = rtd.split(":")
-    tense_debt_voc.update({couple[0]: couple[1]})
-
 
 parser = Parse(VERBOSE)
 m = ManageFols(VERBOSE, LANGUAGE)
@@ -247,23 +235,6 @@ class parse_deps(Procedure): pass
 class feed_mst(Procedure): pass
 class PROCESS_STORED_MST(Reactor): pass
 class NER(Belief): pass
-
-class parse_quest(Procedure): pass
-
-
-
-
-# Question Answering beliefs
-class SEQ(Belief): pass
-class CAND(Belief): pass
-class ANSWERED(Belief): pass
-class CASE(Belief): pass
-class LOC_PREP(Belief): pass
-class LP(Belief): pass
-class TIME_PREP(Belief): pass
-class ROOT(Belief): pass
-class RELATED(Belief): pass
-
 
 
 class log(Action):
@@ -1776,127 +1747,3 @@ class create_IMP_MST_ACT(Action):
 
         self.assert_belief(MST_ACT(verb, davidsonian, "_", obj_var))
         self.assert_belief(MST_VAR(obj_var, obj))
-
-
-# AD-CASPAR Section
-
-class assert_sequence(Action):
-    def execute(self, arg1):
-        sentence = str(arg1).split("'")[3]
-
-        deps = parser.get_deps(sentence, False, True)
-        print(deps)
-
-        first_word = parser.get_lemma(deps[0][2]).lower()[:-2]
-        print("first_word: ", first_word)
-        root_index = 0
-        root = ""
-
-        for i in range(len(deps) - 1):
-            if deps[i][0] == "ROOT":
-                root = parser.get_lemma(deps[i][2])[:-2]
-                root_index = i
-                break
-
-        # polar question beginning with aux
-        if deps[0][0] == "aux":
-            snipplet = ""
-            for i in range(1, len(deps)-1):
-                if i == 1:
-                    snipplet = parser.get_lemma(deps[i][2])[:-2]
-                else:
-                    snipplet = snipplet+" "+parser.get_lemma(deps[i][2])[:-2]
-            self.assert_belief(SEQ("AUX", snipplet))
-
-        elif first_word.lower() in ["who", "what", "which", "when", "where"]:
-            deps[0][2] = "Dummy"
-            self.assert_belief(CASE(first_word.lower()))
-
-            pre_aux = ""
-            aux = ""
-            aux_index = 0
-            post_aux = ""
-            post_root = ""
-            compl_root = ""
-
-            # populating post-verb chunk
-            for i in range(root_index + 1, len(deps) - 1):
-                if deps[i][0] == "ccomp" and parser.get_lemma(deps[i][1])[:-2] == root:
-                    compl_root = parser.get_lemma(deps[i][2])[:-2]
-                else:
-                    if post_root == "":
-                        post_root = parser.get_lemma(deps[i][2])[:-2]
-                    else:
-                        post_root = post_root + " " + parser.get_lemma(deps[i][2])[:-2]
-
-            if len(compl_root) > 0:
-                self.assert_belief(ROOT(root+" "+compl_root))
-            else:
-                self.assert_belief(ROOT(root))
-
-
-            # getting aux index and value
-            for i in range(1, len(deps) - 1):
-                if deps[i][0] in ["aux", "auxpass"] and i < root_index:
-                    aux = parser.get_lemma(deps[i][2])[:-2]
-                    aux_index = i
-                    break
-
-            # getting pre-aux frame
-            for i in range(1, aux_index):
-                if len(pre_aux) == 0:
-                    pre_aux = parser.get_lemma(deps[i][2])[:-2]
-                else:
-                    pre_aux = pre_aux + " " + parser.get_lemma(deps[i][2])[:-2]
-
-            # getting post-aux frame
-            for i in range(aux_index + 1, root_index):
-                if len(post_aux) == 0:
-                    post_aux = parser.get_lemma(deps[i][2])[:-2]
-                else:
-                    post_aux = post_aux + " " + parser.get_lemma(deps[i][2])[:-2]
-
-            print("\npre_aux: ", pre_aux)
-            print("aux: ", aux)
-            print("post_aux: ", post_aux)
-            print("verb: ", root)
-            print("post_root: ", post_root)
-            print("compl_root: ", compl_root)
-
-            if aux in tense_debt_voc:
-                print("\nroot tense debt: ", root, " ---> ", tense_debt_voc[aux])
-                parser.set_pending_root_tense_debt(tense_debt_voc[aux])
-
-            if first_word.lower() == "who":
-
-                self.assert_belief(SEQ(pre_aux, aux, post_aux, root, compl_root, post_root))
-
-            elif first_word == "what" or first_word == "which":
-
-                self.assert_belief(SEQ(pre_aux, aux, post_aux, root, compl_root, post_root))
-
-            elif first_word == "when":
-
-                for lc in TIME_PREPS:
-                    self.assert_belief(TIME_PREP(lc))
-
-                self.assert_belief(SEQ(pre_aux, aux, post_aux, root, post_root, compl_root))
-
-            elif first_word == "where":
-
-                if deps[len(deps)-2][0] != "prep":
-                    self.assert_belief(LP("YES"))
-                    for lc in LOC_PREPS:
-                        self.assert_belief(LOC_PREP(lc))
-
-                self.assert_belief(SEQ(pre_aux, aux, post_aux, root, post_root, compl_root))
-
-        else:
-            self.assert_belief(SEQ(sentence[:-1]))
-
-        parser.flush()
-
-
-class tense_debt_paid(Action):
-    def execute(self):
-        parser.set_pending_root_tense_debt(None)
