@@ -9,13 +9,21 @@ Knowledge Graphs expressed belonging foundational ontology LODO with Large Langu
 
 ---------------
 
-This repository has been tested on Python 3.7.3 64bit on Windows 10, with the following packages versions:
+This repository has been tested on Python 3.7.3 64bit (Windows 10/PopOs linux), with the following packages versions:
 
 * [Phidias](https://github.com/corradosantoro/phidias) (release 1.3.4.alpha) 
 * [spaCy](https://spacy.io/) (ver. 2.2.4)
 * [Natural Language Toolkit](https://www.nltk.org/) (ver. 3.5)
 * [Owlready2](https://pypi.org/project/Owlready2/) (ver. 0.26)
-* [pyttsx3 (Text-to-Speech)](https://pyttsx3.readthedocs.io/en/latest/) 
+* transformers (ver. 4.34.0)
+* peft (ver. 4.0)
+* sentencepiece (ver. 0.1.99)
+* datasets (ver. 2.13.0)
+* accelerate (ver. 0.23.0)
+* bitsandbytes (ver. 0.41.1)
+* trl (ver. 0.4.7)
+* safetensors (ver. 0.3.1)
+* scipy (latest)
 
 ### Phidias
 
@@ -61,24 +69,34 @@ from prompt:
 ```
 
 
+### Pytorch
 
-# Testing
-This cognitive architecture is designed to implement more intelligent agents and also 
-is an agent itself. Before starting the agent, Entities and Speech-To-Text Interfaces must be defined.
+Follow the instructions reported [here](https://pytorch.org/) for the current system.
 
-### Entities definition
+### Llama 2 
 
----------------
+* Download Llama-2-7b-chat-hf (or 70b) from [huggingface](
+Llama-2-7b-chat-hf) and copy it in a local folder (BASE_MODEL in [LLM] Section of config.ini). The other two adapters path must be set as well (ADAPTER_PATH1 and ADAPTER_PATH2 in [LLM] Section of config.ini). Both adapters finetuning's code is in the folder "finetuning" of this repository. 
 
-Entities involved in reasoning must be defined in the Smart Environment Interface (smart_env_int.py).
+### QLoRA
 
-### Speech-To-Text Interfaces
+```sh
+> pip install transformers==4.34.0
+> pip install peft==0.4.0
+> pip install sentencepiece==0.1.99
+> pip install datasets==2.13.0
+> pip install accelerate==0.23.0
+> pip install bitsandbytes==0.41.1
+> pip install trl==0.4.7
+> pip install safetensors>=0.3.1
+> pip install scipy
+```
 
----------------
+### Huggingface hub (optional)
+```sh
+> pip install huggingface_hub
+```
 
-STT Interfaces (for both hotword and utterances) must be defined inside the Instances Sensors 
-(sensors.py).
- 
 
 ### Starting agent
 
@@ -87,17 +105,17 @@ STT Interfaces (for both hotword and utterances) must be defined inside the Inst
 First of all, you must create the ontology. In order to do that, you must follow three preliminar steps:
 
 * Choose the owl file name, by setting the variable FILE_NAME (within AGENT) in the config.ini (test.owl for instance)
-* Execute sw-caspar.py
+* Execute qulio-xr.py
 
 ```sh
 Creating new test.owl file...
 
-Please Re-Run SW-Caspar.
+Please Re-Run QuLIO-XR.
 
 Process finished with exit code 0
 ```
 
-* Re-execute sw-caspar
+* Re-execute QuLIO-XR
 
 ```sh
 Loading existing test.owl file...
@@ -111,24 +129,15 @@ NLP engine initializing. Please wait...
 
 
 eShell: main > go()
-eShell: main > Starting SW-Caspar...
+eShell: main > Starting QuLIO-XR...
 
 Starting Hotword detection...
 
 eShell: main > 
 ```
 
-Now sw-caspar is ready.
+Now QuLIO-XR is ready.
 Unless you delete the owl file or choose to create another ontology, the agent will try to load every time the file specified in confi.ini.
-
-
-### IoT commands and routines
-
----------------
-
-For this section the developer is referred to [CASPAR](https://github.com/cfabiolongo/pycaspar).
-
-
 
 ### Ontology Learning
 
