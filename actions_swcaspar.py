@@ -1,6 +1,4 @@
 from parse_en import *
-from nl_to_fol import *
-
 
 from phidias.Types import *
 import configparser
@@ -13,7 +11,6 @@ config.read('config.ini')
 
 LOC_PREPS = str(config.get('QA', 'LOC_PREPS')).split(", ")
 TIME_PREPS = str(config.get('QA', 'TIME_PREPS')).split(", ")
-
 
 FILE_NAME = config.get('AGENT', 'FILE_NAME')
 

@@ -98,6 +98,14 @@ Llama-2-7b-chat-hf) and copy it in a local folder (BASE_MODEL in [LLM] Section o
 ```
 
 
+### Setting interaction configuration
+
+In section [LLM] of config.ini, the parameter *MODE* must be set as follows: 
+* KG (OWL inference with OWL-to-NL response)
+* LLM (only Query/Answer LLM)
+* DUAL (KG+LLM) 
+
+
 ### Starting agent
 
 ---------------
@@ -151,7 +159,7 @@ Considering the following sentences:
 * _the Colonel West sells missiles to Cuba_
 * _When an American sells weapons to a hostile nation, that American is a criminal_
 
-SW-Caspar will model the ontology in order to infer the further natural language assertion:
+QuLIO-XR will model the ontology in order to infer the further natural language assertion:
 
 * _Colonel West is a criminal_
 
@@ -181,23 +189,15 @@ Here's all axioms:
  
 ![Image 5](/images/west-rules.JPG)
 
-### Reasoning
+### Reasoning (Protegè)
 
 ---------------
 
-Thanks to all relations and axioms, we can make reasoning (with Hermit/Pellet) and infer the following further
+Thanks to all relations and axioms, we can make reasoning (Hermit/Pellet) and infer the following further
 relations referred to the individual "Colonel_West.791305":
 
 ![Image 6](/images/west-criminal.JPG)
 
-
-### Meta-Reasoning
-
----------------
-
-The IoT SW-Caspar's reasoning capabilities are utterly expressed by the production rules system in the Smart Environment Interface (smart_env_int.py). 
-Each rule can be also subordinated by further conditions (Active beliefs), whom will make the Beliefs KB and the Ontology interact with each other through a Meta-Reasoning process.
-For instance, considering another ontology (changing FILE_NAME as "health.owl" in config.ini):
 
 ```sh
 eShell: main > +FEED("Robinson Crusoe is a patient")
@@ -212,29 +212,14 @@ Here's ontology details like seen previously:
 ![Image 10](/images/health-nontaxo2.JPG)
 ![Image 11](/images/health-rules.JPG)
 
-Considering the triggering conditions of the rule in line 21-22 of smart_env_int.py:
-
-```sh
-+INTENT(X, "Rinazina", Z, T) / (lemma_in_syn(X, "give.v.19") & eval_sem(T, "Hypertensive")) >> [show_ct(), say("I cannot execute the task. The patient is hypertensive")]
-+INTENT(X, "Rinazina", Z, T) / lemma_in_syn(X, "give.v.19") >> [exec_cmd(X, "Rinazina", Z, T), show_ct(), say("execution successful")]
-```
-
-Let's suppose to simulate the agent awakening from its idle state with the following command:
-
-```sh
-eShell: main > +WAKE("TEST")
-```
-
-Then, give te agent the following vocal command:
-
-```sh
-eShell: main > +STT("Give Rinazina to Robinson Crusoe")]
-```
-
-In such case, together with the evaluation of the ActiveBelief *lemma_in_syn(X, "give.v.19")* (which will check a proper verb), the ActiveBelief *eval_sem(T, "Hypertensive")* will invoke the reasoner pellet and check for membership
-of *Robinson Crusoe* to the class *Hypertensive*.
+In such a case, by invoking the reasoner (Hermit/Pellet) will infer that *Robinson Crusoe* belong also to the class *Hypertensive*.
 
 ![Image 12](/images/health-hypertensive.JPG)
 
-In this case, the first production rule will be triggered and the agent will not provide the drug to the patient.
-Otherwise, the second production rule will be triggered and the agent won't have obection to provide the drug to the patient.
+### Reasoning (shell)
+
+-----> to be added soon!
+
+### Reasoning (RESTful)
+
+-----> to be added soon!
