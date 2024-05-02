@@ -157,7 +157,7 @@ For instance, considering the following sentences:
 * _Colonel West is American_
 * _Cuba is a hostile nation_
 * _missiles are weapons_
-* _the Colonel West sells missiles to Cuba_
+* _Colonel West sells missiles to Cuba_
 * _When an American sells weapons to a hostile nation, that American is a criminal_
 
 QuLIO-XR will model the ontology in order to infer the further natural language assertion:
@@ -170,7 +170,7 @@ To let the agent model the ontology on this basis, you must execute the followin
 eShell: main > +FEED("Colonel West is American")
 eShell: main > +FEED("Cuba is a hostile nation")
 eShell: main > +FEED("missiles are weapons")
-eShell: main > +FEED("the Colonel West sells missiles to Cuba")
+eShell: main > +FEED("Colonel West sells missiles to Cuba")
 eShell: main > +FEED("When an American sells weapons to a hostile nation, that American is a criminal")
 ```
 
