@@ -157,7 +157,7 @@ After having started QuLIO-XR agent, to feed KGs with *sentence* you must assert
 eShell: main > +FEED("sentence")
 ```
 
-For insyance, considering the following sentences:
+For instance, considering the following sentences:
 
 * _Colonel West is American_
 * _Cuba is a hostile nation_
