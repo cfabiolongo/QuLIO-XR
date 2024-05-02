@@ -8,16 +8,14 @@ class QUERY(Reactor): pass
 class QUESTION(Reactor): pass
 
 # sentences for reasoning purposes
-c1() >> [+FEED("The Colonel West is an American")]
+c1() >> [+FEED("Colonel West is an American")]
 c2() >> [+FEED("Cuba is a hostile nation")]
 c3() >> [+FEED("missiles are weapons")]
 c4() >> [+FEED("the Colonel West sells missiles to Cuba")]
 c5() >> [+FEED("When an American sells weapons to a hostile nation, that American is a criminal")]
 
 # Query
-#q() >> [+QUERY("The Colonel West is a criminal")]
-q() >> [+FEED("Most of these therapeutic agents require intracellular uptake for their therapeutic effect because their site of action is within the cell")]
-
+q() >> [+QUERY("Colonel West sells missiles to Cuba")]
 
 # testing rules
 +FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Feed",X), show_ct(), +LISTEN("TEST")]
