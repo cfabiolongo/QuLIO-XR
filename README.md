@@ -150,7 +150,13 @@ Unless you delete the owl file or choose to create another ontology, the agent w
 
 ---------------
 
-Considering the following sentences:
+After having started QuLIO-XR agent, to feed KGs with *sentence* you must assert the belief FEED as follows:
+
+```sh
+eShell: main > +FEED("sentence")
+```
+
+For insyance, considering the following sentences:
 
 * _Colonel West is American_
 * _Cuba is a hostile nation_
