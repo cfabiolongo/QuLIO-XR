@@ -30,15 +30,7 @@ q() >> [+FEED("Most of these therapeutic agents require intracellular uptake for
 +FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Feed",X), show_ct(), +LISTEN("TEST")]
 +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Query",X), show_ct(), +REASON("TEST")]
 +PROCESS_STORED_MST("OK") / LISTEN("TEST") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule(), -LISTEN("TEST")]
-+PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), -REASON("TEST")]
-
-
-+STT(X) / (WAKE("ON") & LISTEN("ON")) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), show_ct(), +ANSWER(X), Timer(W).start()]
-+STT(X) / (WAKE("ON") & REASON("ON")) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), show_ct(), Timer(W).start()]
-
-
-# Query KB
-+PROCESS_STORED_MST("OK") / (WAKE("ON") & REASON("ON")) >> [show_line("\nGot it.\n"), create_onto("NOMINAL")]
++PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nGot it.\n"), create_query(), -REASON("TEST")]
 
 # Nominal ontology assertion --> single: FULL", "ONE" ---  multiple: "BASE", "MORE"
 +PROCESS_STORED_MST("OK") / (WAKE("ON") & LISTEN("ON")) >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule()]
@@ -47,4 +39,5 @@ process_rule() / IS_RULE("TRUE") >> [show_line("\n------> rule detected!\n"), -I
 
 # Ontology creation
 create_onto(T) >> [preprocess_onto(T), InitOnto(), process_onto(), show_line("\n------------- Done:", T, "\n")]
+create_query() >> [show_line("\n------------- Creating query SPARQL....:\n")]
 

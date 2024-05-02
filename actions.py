@@ -116,6 +116,7 @@ class create_head(Procedure): pass
 class finalize_onto(Procedure): pass
 class create_ner(Procedure): pass
 class valorize(Procedure): pass
+class create_query(Procedure): pass
 
 
 # Reactive procedures - direct commands
