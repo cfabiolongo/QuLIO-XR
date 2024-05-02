@@ -17,7 +17,7 @@ try:
 except IOError:
     my_onto = get_ontology("http://test.org/"+FILE_NAME)
     print("\nCreating new "+FILE_NAME+" file...")
-    print("\nPlease Re-Run SW-Caspar.")
+    print("\nPlease Re-Run Qu-LIO-XR.")
     my_onto.save(file=FILE_NAME, format="rdfxml")
     exit()
 
