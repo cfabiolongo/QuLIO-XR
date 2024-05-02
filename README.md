@@ -1,7 +1,7 @@
 # QuLIO-XR
 
-This is the repository of the Python (3.7+) implementation of QuLIO-XR (Querying Linguistic Ontologies with eXpressive Response), which integrates
-Knowledge Graphs expressed belonging foundational ontology LODO with Large Language Models.
+This is the repository of the Python (3.7+) implementation of QuLIO-XR (**Qu**erying **LI**nguistic **O**ntologies with e**X**pressive **R**esponse), which integrates
+Knowledge Graphs expressed in OWL 2 and instances of the foundational ontology LODO with Large Language Models. 
 
 ![Image 1](images/QuLIO-XR.jpg)
 
@@ -204,6 +204,7 @@ relations referred to the individual "Colonel_West.791305":
 
 ![Image 6](/images/west-criminal.JPG)
 
+Considering also the following small knowledge base, in order to test also *Value Giver Statements* properties and *Values Comparison Conditionals* axioms: 
 
 ```sh
 eShell: main > +FEED("Robinson Crusoe is a patient")
