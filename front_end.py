@@ -5,7 +5,6 @@ from qa_shifter import *
 # Clauses KB manual feeding beliefs
 class FEED(Reactor): pass
 class QUERY(Reactor): pass
-class QUESTION(Reactor): pass
 
 # sentences for reasoning purposes
 c1() >> [+FEED("Colonel West is an American")]
@@ -21,7 +20,7 @@ q() >> [+QUERY("Colonel West sells missiles to Cuba")]
 +FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Feed",X), show_ct(), +LISTEN("TEST")]
 +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Query",X), show_ct(), +REASON("TEST")]
 +PROCESS_STORED_MST("OK") / LISTEN("TEST") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule(), -LISTEN("TEST")]
-+PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nGot it.\n"), create_query(), -REASON("TEST")]
++PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nProcessing query.....\n"), create_sparql(), -REASON("TEST")]
 
 # Nominal ontology assertion --> single: FULL", "ONE" ---  multiple: "BASE", "MORE"
 +PROCESS_STORED_MST("OK") / LISTEN("ON") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule()]
@@ -30,5 +29,3 @@ process_rule() / IS_RULE("TRUE") >> [show_line("\n------> rule detected!\n"), -I
 
 # Ontology creation
 create_onto(T) >> [preprocess_onto(T), InitOnto(), process_onto(), show_line("\n------------- Done:", T, "\n")]
-create_query() >> [show_line("\n------------- Creating query SPARQL....:\n")]
-
