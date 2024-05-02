@@ -2,6 +2,7 @@
 
 This is the repository of the Python (3.7+) implementation of QuLIO-XR (**Qu**erying **LI**nguistic **O**ntologies with e**X**pressive **R**esponse), which integrates
 Knowledge Graphs expressed in OWL 2 and instances of the foundational ontology LODO with Large Language Models. 
+The LODO foundational ontology was presented as [short paper](https://ceur-ws.org/Vol-2963/paper10.pdf) in *Workshop on Agents* (WOA 2021) held in Bologna in June 2021. A full paper of the work is also available in [Intelligenza Artificiale](https://content.iospress.com/articles/intelligenza-artificiale/ia210125). 
 
 ![Image 1](images/QuLIO-XR.jpg)
 
