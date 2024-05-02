@@ -1,6 +1,4 @@
-from phidias.Lib import *
 from actions import *
-from sensors import *
 from qa_shifter import *
 
 
@@ -8,11 +6,6 @@ from qa_shifter import *
 class FEED(Reactor): pass
 class QUERY(Reactor): pass
 class QUESTION(Reactor): pass
-
-# Front-End STT
-
-# SIMULATING EVENTS
-
 
 # sentences for reasoning purposes
 c1() >> [+FEED("The Colonel West is an American")]
@@ -33,7 +26,7 @@ q() >> [+FEED("Most of these therapeutic agents require intracellular uptake for
 +PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nGot it.\n"), create_query(), -REASON("TEST")]
 
 # Nominal ontology assertion --> single: FULL", "ONE" ---  multiple: "BASE", "MORE"
-+PROCESS_STORED_MST("OK") / (WAKE("ON") & LISTEN("ON")) >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule()]
++PROCESS_STORED_MST("OK") / LISTEN("ON") >> [show_line("\nGot it.\n"), create_onto("NOMINAL"), process_rule()]
 # processing rule
 process_rule() / IS_RULE("TRUE") >> [show_line("\n------> rule detected!\n"), -IS_RULE("TRUE"), create_onto("RULE")]
 
