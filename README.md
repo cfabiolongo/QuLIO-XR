@@ -233,8 +233,8 @@ It is well-known that natural language can be ambiguous, subject to interpretati
 For such a reason out-of-common sense utterance might lead to unexpected triples, due to the dataset the dependency parser has been trained on. Still, as reported [here](https://spacy.io/usage/facts-figures), the model used for dependency parsing has an accuracy of 0.95, which means that some missful/wrong dependecy classification is expected, especially for longer sentences.
 Beyond that, the following are known issues related to the code in this repository:
 
-* Anaphora resolution/coreferentiators are not included in this code. So it is recommended to not use sentence containing pronoms, otherwise translation from natural language in triples won't be successful.
+* Anaphora resolution/coreferentiators are not included in this code. So it is recommended to not use sentence containing pronoms, otherwise translation from natural language in OWL 2 won't be successful.
 For this purpose, the integration of tools such as [neuralcoref](https://github.com/huggingface/neuralcoref) is recommended. Coders might include such a tool in their own fork of this repository.
 * Sentence containing singles quotation marks (') are still not well managed. So, it is recommended to not use it, and, in such a case, to rephrase utterances differently.
-* Occasional crashes during parsing of text may occur, especially during conversion from natural language into triples. In this case, rephrasing/reducing utterances is recommended.
+* Occasional crashes during parsing of text may occur, especially during conversion from natural language to OWL 2. In this case, rephrasing/reducing utterances is recommended.
 * IMPORTANT: all production rules are designed starting from a toy domain. Practical use involves a global review of all parsing rules and modules.
