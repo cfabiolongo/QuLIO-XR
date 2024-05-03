@@ -1,6 +1,5 @@
+from phidias.Lib import *
 from actions import *
-from qa_shifter import *
-
 
 # Clauses KB manual feeding beliefs
 class FEED(Reactor): pass

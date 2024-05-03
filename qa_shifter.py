@@ -1,6 +1,3 @@
-
-from phidias.Types import *
-from phidias.Lib import *
 import configparser
 
 config = configparser.ConfigParser()
