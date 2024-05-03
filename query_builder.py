@@ -2,8 +2,6 @@ from phidias.Lib import *
 from actions import *
 
 
-# Feeding query sparql
-
 # ----- WHO questions -----
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, "Who01:WP")) >> [show_line("\nWHO question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "Who01:WP"), feed_query_sparql(X, Y), feed_sparql()]
 
@@ -23,4 +21,7 @@ feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Y, "When01:WRB") & MST_VAR(Z, W) 
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Y, "When01:WRB") & MST_VAR(Z, "?") & MST_VAR(T, K)) >> [show_line("\nWHEN (passive) question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Y, "When01:WRB"), -MST_VAR(Z, K), -MST_VAR(T, "?"), feed_query_sparql(X, Y), feed_sparql()]
 
 # ----- POLAR questions -----
+# Copular verbs (Colonel West is American?")
+feed_sparql() / (MST_ACT(X, "Be01:VBZ", Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_line("\nPOLAR question detected..."), -MST_ACT(X, "Be01:VBZ", Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y), feed_sparql()]
+# Non-copular verbs (Colonel sells missiles to Nono?")
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_line("\nPOLAR question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y), feed_sparql()]
