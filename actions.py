@@ -203,7 +203,7 @@ class parse_deps(Procedure): pass
 class feed_mst(Procedure): pass
 class PROCESS_STORED_MST(Reactor): pass
 class NER(Belief): pass
-
+class feed_sparql(Procedure): pass
 
 class log(Action):
     """log direct assertions from keyboard"""
@@ -1346,3 +1346,22 @@ class create_IMP_MST_ACT(Action):
 
         self.assert_belief(MST_ACT(verb, davidsonian, "_", obj_var))
         self.assert_belief(MST_VAR(obj_var, obj))
+
+
+# SPARQL Section
+
+class feed_query_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2):
+
+        # var = str(arg1).split("'")[3]
+        # val = str(arg2).split("'")[3]
+
+        print(arg1)
+        print(arg2)
+        print("-----------------> Ciao!")
+        # variable = []
+        # variable.append(var)
+        # variable.append(val)
+
+        #parser.feed_MST(variable, 1)
