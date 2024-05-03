@@ -22,6 +22,6 @@ feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Y, "When01:WRB") & MST_VAR(Z, "?"
 
 # ----- POLAR questions -----
 # Copular verbs (Colonel West is American?")
-feed_sparql() / (MST_ACT(X, "Be01:VBZ", Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_line("\nPOLAR question detected..."), -MST_ACT(X, "Be01:VBZ", Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y), feed_sparql()]
+feed_sparql() / (MST_ACT(X, "Be01:VBZ", Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_line("\nPOLAR (copular) question detected..."), -MST_ACT(X, "Be01:VBZ", Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y), feed_sparql()]
 # Non-copular verbs (Colonel sells missiles to Nono?")
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_line("\nPOLAR question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y), feed_sparql()]
