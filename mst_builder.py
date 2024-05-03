@@ -145,11 +145,11 @@ feed_mst() / MST_COND(X) >> [show_line("\nfeeding MST with a cond..."), -MST_CON
 # Who
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, "Who01:WP")) >> [show_line("\nWHO question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "Who01:WP"), feed_query_sparql(X, Y), feed_sparql()]
 
-feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, "What01:WP")) >> [show_line("\nWHAT question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "What:WP"), feed_query_sparql(X, Y), feed_sparql()]
+feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, "What01:WP")) >> [show_line("\nWHAT question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "What01:WP"), feed_query_sparql(X, Y), feed_sparql()]
 
-feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(X, "Where01:WRB")) >> [show_line("\nWHERE question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "Where:WP"), feed_query_sparql(X, Y), feed_sparql()]
+feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(X, "Where01:WRB")) >> [show_line("\nWHERE question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "Where01:WP"), feed_query_sparql(X, Y), feed_sparql()]
 
-feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(X, "When01:WRB")) >> [show_line("\nWHEN question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "When:WP"), feed_query_sparql(X, Y), feed_sparql()]
+feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(X, "When01:WRB")) >> [show_line("\nWHEN question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "When01:WP"), feed_query_sparql(X, Y), feed_sparql()]
 
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(X, K)) >> [show_line("\nPOLAR question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y), feed_sparql()]
 
