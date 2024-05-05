@@ -1,7 +1,6 @@
 from parse_en import *
 from nl_to_fol import *
 
-
 from phidias.Types import *
 import configparser
 from datetime import datetime
@@ -153,21 +152,7 @@ class MOD(Belief): pass
 class PRE_INTENT(Belief): pass
 class INTENT(Reactor): pass
 
-# routines beliefs
-class PRE_ROUTINE(Belief): pass
-class ROUTINE(Belief): pass
-class ROUTINE_PRE_MOD(Belief): pass
-class ROUTINE_MOD(Belief): pass
-class ROUTINE_GROUND(Belief): pass
 
-# conditionals beliefs
-class PRE_COND(Belief): pass
-class COND(Belief): pass
-class COND_GROUND(Belief): pass
-class COND_PRE_MOD(Belief): pass
-
-class SENSOR(Belief): pass
-class START_ROUTINE(Reactor): pass
 
 # action
 class ACTION(Belief): pass
@@ -203,6 +188,8 @@ class feed_mst(Procedure): pass
 class PROCESS_STORED_MST(Reactor): pass
 class NER(Belief): pass
 class feed_sparql(Procedure): pass
+
+class SPARQL(Reactor): pass
 
 class log(Action):
     """log direct assertions from keyboard"""
@@ -1364,6 +1351,26 @@ class feed_query_sparql(Action):
         # variable.append(val)
 
         #parser.feed_MST(variable, 1)
+
+
+class feed_cop_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2):
+
+        val1 = str(arg1).split("'")[3]
+        val2 = str(arg2).split("'")[3]
+
+        val1_clean = val1.split(":")[0][:-2]
+        val2_clean = val2.split(":")[0][:-2]
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        q = p + "ASK WHERE { ?c rdf:type lodo:"+val1_clean+". ?c rdf:type lodo:"+val2_clean+"}"
+
+        self.assert_belief(SPARQL(q))
+
+
 
 
 class join_cmps(Action):

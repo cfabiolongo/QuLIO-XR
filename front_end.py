@@ -5,6 +5,7 @@ from actions import *
 class FEED(Reactor): pass
 class QUERY(Reactor): pass
 
+
 # sentences for reasoning purposes
 c1() >> [+FEED("Colonel West is an American")]
 c2() >> [+FEED("Cuba is a hostile nation")]
