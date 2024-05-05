@@ -30,4 +30,4 @@ feed_sparql() / (MST_ACT("Be01:VBZ", X, Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >
 # Non-copular verbs (Colonel sells missiles to Nono?")
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_line("\nPOLAR question detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, K), feed_query_sparql(X, Y)]
 
-+SPARQL(X) >> [show_line("\nSPARQL: \n", X), log("Sparql", X)]
++SPARQL(X) >> [show_line("\nQuery sparql built: \n", X), log("Sparql\n", X), submit_query_sparql(X)]

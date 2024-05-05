@@ -70,6 +70,15 @@ from prompt:
 > pip install owlready2
 ```
 
+### rdflib 
+
+---------------
+
+from prompt:
+```sh
+> pip install rdflib
+```
+
 
 ### Pytorch
 

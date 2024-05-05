@@ -1336,6 +1336,22 @@ class create_IMP_MST_ACT(Action):
 
 # SPARQL Section
 
+class submit_query_sparql(Action):
+    """Submit a Query Sparql to Reasoner"""
+    def execute(self, arg1):
+
+        query = str(arg1).split("'")[3]
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        sync_reasoner_hermit(my_world)
+        graph = my_world.as_rdflib_graph()
+        result = list(graph.query(query))
+
+        print("\nResult: ", result)
+
+
 class feed_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2):
