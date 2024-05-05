@@ -1364,3 +1364,15 @@ class feed_query_sparql(Action):
         # variable.append(val)
 
         #parser.feed_MST(variable, 1)
+
+
+class join_cmps(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3):
+
+        var = str(arg1).split("'")[3]
+        val1 = str(arg2).split("'")[3]
+        val2 = str(arg3).split("'")[3]
+
+        new_var = val2.split(":")[0][:-2]+"_"+val1
+        self.assert_belief(MST_VAR(var, new_var))
