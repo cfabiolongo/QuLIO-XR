@@ -1382,7 +1382,9 @@ class feed_cop_sparql(Action):
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + "PREFIX lodo: <http://test.org/west.owl#> "
 
-        q = p + "ASK WHERE { ?c rdf:type lodo:"+val1_clean+". ?c rdf:type lodo:"+val2_clean+"}"
+        # +QUERY("Colonel West is American?")
+
+        q = p + "ASK WHERE { ?i rdf:type lodo:"+val1_clean+". ?i rdf:type lodo:"+val2_clean+"}"
 
         self.assert_belief(SPARQL(q))
 
