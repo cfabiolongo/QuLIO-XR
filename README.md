@@ -185,19 +185,19 @@ eShell: main > +FEED("When an American sells weapons to a hostile nation, that A
 
 Here is all taxonomic relations (by opening the ontology file with Protege) after the such assertions:
  
-![Image 2](/images/west-taxo.JPG)
+![Image 2](images/west-taxo.JPG)
 
 Here is all individuals. The number related to each sentence will always be different depending on the timestamp:
  
-![Image 3](/images/west-ind.JPG)
+![Image 3](images/west-ind.JPG)
 
 Here is all non-taxonomic relations related to the individual "Be.426837":
  
-![Image 4](/images/west-nontaxo.JPG)
+![Image 4](images/west-nontaxo.JPG)
 
 Here's all axioms:
  
-![Image 5](/images/west-rules.JPG)
+![Image 5](images/west-rules.JPG)
 
 ### Reasoning (Protegè)
 
@@ -206,7 +206,7 @@ Here's all axioms:
 Thanks to all relations and axioms, we can make reasoning (Hermit/Pellet) and infer the following further
 relations referred to the individual "Colonel_West.791305":
 
-![Image 6](/images/west-criminal.JPG)
+![Image 6](images/west-criminal.JPG)
 
 Considering also the following small knowledge base, in order to test also *Value Giver Statements* properties and *Values Comparison Conditionals* axioms: 
 
@@ -217,15 +217,15 @@ eShell: main > +FEED("When a patient has diastolic blood pressure greater than 1
 ```
 Here's ontology details like seen previously:
 
-![Image 7](/images/health-taxo.JPG)
-![Image 8](/images/health-ind.JPG)
-![Image 9](/images/health-nontaxo1.JPG)
-![Image 10](/images/health-nontaxo2.JPG)
-![Image 11](/images/health-rules.JPG)
+![Image 7](images/health-taxo.JPG)
+![Image 8](images/health-ind.JPG)
+![Image 9](images/health-nontaxo1.JPG)
+![Image 10](images/health-nontaxo2.JPG)
+![Image 11](images/health-rules.JPG)
 
 In such a case, by invoking the reasoner (Hermit/Pellet) will infer that *Robinson Crusoe* belong also to the class *Hypertensive*.
 
-![Image 12](/images/health-hypertensive.JPG)
+![Image 12](images/health-hypertensive.JPG)
 
 ### Reasoning (shell)
 
