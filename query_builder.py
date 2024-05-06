@@ -32,7 +32,7 @@ feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Y, "When01:WRB") & MST_VAR(Z, "?"
 feed_sparql() / (MST_ACT("Be01:VBZ", E, X, Y) & MST_VAR(X, W) & MST_VAR(Y, K)) >> [show_line("\nPOLAR (copular) detected..."), -MST_ACT("Be01:VBZ", E, X, Y), -MST_VAR(X, W), -MST_VAR(Y, K), feed_cop_sparql(E, X, Y, W, K), finalize_sparql()]
 
 # Non-copular verbs (Colonel sells missiles to Nono?")
-feed_sparql() / (MST_ACT(Z, E, X, Y) & MST_VAR(X, W) & MST_VAR(X, W)) >> [show_line("\nPOLAR detected..."), -MST_ACT(Z, E, X, Y), -MST_VAR(X, W), -MST_VAR(X, W), feed_query_sparql(Z, E, X, Y, W, K), finalize_sparql()]
+feed_sparql() / (MST_ACT(Z, E, X, Y) & MST_VAR(X, W) & MST_VAR(Y, K)) >> [show_line("\nPOLAR detected..."), -MST_ACT(Z, E, X, Y), -MST_VAR(X, W), -MST_VAR(Y, K), feed_query_sparql(Z, E, X, Y, W, K), finalize_sparql()]
 
 
 # finalizing sqarql with satellite conditions
