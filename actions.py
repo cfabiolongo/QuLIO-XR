@@ -188,8 +188,10 @@ class feed_mst(Procedure): pass
 class PROCESS_STORED_MST(Reactor): pass
 class NER(Belief): pass
 class feed_sparql(Procedure): pass
+class finalize_sparql(Procedure): pass
 
 class SPARQL(Reactor): pass
+class PRE_SPARQL(Belief): pass
 
 class log(Action):
     """log direct assertions from keyboard"""
@@ -1371,22 +1373,58 @@ class feed_query_sparql(Action):
 
 class feed_cop_sparql(Action):
     """Feed Query Sparql parser"""
-    def execute(self, arg1, arg2):
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
 
-        val1 = str(arg1).split("'")[3]
-        val2 = str(arg2).split("'")[3]
+        e = str(arg1).split("'")[3]
+        x = str(arg2).split("'")[3]
+        y = str(arg3).split("'")[3]
+        val_x = str(arg4).split("'")[3]
+        val_y = str(arg5).split("'")[3]
 
-        val1_clean = val1.split(":")[0][:-2]
-        val2_clean = val2.split(":")[0][:-2]
+        subject = val_x.split(":")[0][:-2]
+        object = val_y.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + "PREFIX lodo: <http://test.org/west.owl#> "
 
         # +QUERY("Colonel West is American?")
 
-        q = p + "ASK WHERE { ?i rdf:type lodo:"+val1_clean+". ?i rdf:type lodo:"+val2_clean+"}"
+        q = p + "ASK WHERE { ?"+y+" rdf:type lodo:"+subject+". ?"+y+"  rdf:type lodo:"+object +".}"
 
-        self.assert_belief(SPARQL(q))
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
+
+
+class feed_prep_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7):
+
+        print(arg1)
+        print(arg2)
+        print(arg3)
+        print(arg4)
+        print(arg5)
+        print(arg6)
+        print(arg7)
+
+        e = str(arg1).split("'")[3]
+        x = str(arg2).split("'")[3]
+        y = str(arg3).split("'")[3]
+
+        p = str(arg4).split("'")[3]
+        prep = p.split(":")[0][:-2]
+
+        prep_obj = str(arg5).split("'")[3]
+
+        prep_obj_val = str(arg6).split("'")[3]
+        prep_obj_val = prep_obj_val.split(":")[0][:-2]
+
+        q = str(arg7).split("'")[3][:-1]
+
+        # +QUERY("Colonel West is President of Cuba?")
+
+        q = q + f" ?{y} lodo:hasPrep ?p{y}. ?p{y} rdf:type lodo:{prep}. ?p{y} lodo:hasObj ?{prep_obj}. ?{prep_obj} rdf:type lodo:{prep_obj_val}."+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
 
 
 
