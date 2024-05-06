@@ -1336,7 +1336,10 @@ class create_IMP_MST_ACT(Action):
         self.assert_belief(MST_VAR(obj_var, obj))
 
 
-# SPARQL Section
+# ----------------------------------
+# --------- SPARQL Section ---------
+# ----------------------------------
+
 
 class submit_query_sparql(Action):
     """Submit a Query Sparql to Reasoner"""
@@ -1356,19 +1359,26 @@ class submit_query_sparql(Action):
 
 class feed_query_sparql(Action):
     """Feed Query Sparql parser"""
-    def execute(self, arg1, arg2):
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
 
-        # var = str(arg1).split("'")[3]
-        # val = str(arg2).split("'")[3]
+        verb = str(arg1).split("'")[3]
+        e = str(arg2).split("'")[3]
+        x = str(arg3).split("'")[3]
+        y = str(arg4).split("'")[3]
+        val_x = str(arg5).split("'")[3]
+        val_y = str(arg6).split("'")[3]
 
-        print(arg1)
-        print(arg2)
-        print("-----------------> Ciao!")
-        # variable = []
-        # variable.append(var)
-        # variable.append(val)
+        subject = val_x.split(":")[0][:-2]
+        object = val_y.split(":")[0][:-2]
 
-        #parser.feed_MST(variable, 1)
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        # +QUERY("Colonel West is American?")
+
+        q = f"ASK WHERE ?{y} rdf:type lodo:subject. ?y rdf:type lodo:object"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
 
 
 class feed_cop_sparql(Action):
@@ -1387,9 +1397,9 @@ class feed_cop_sparql(Action):
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + "PREFIX lodo: <http://test.org/west.owl#> "
 
-        # +QUERY("Colonel West is American?")
+        q = "ASK WHERE { "
 
-        q = p + "ASK WHERE { ?"+y+" rdf:type lodo:"+subject+". ?"+y+"  rdf:type lodo:"+object +".}"
+        q = p + q + f"?y rdf:type lodo:{subject}. ?y rdf:type lodo:object."+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
