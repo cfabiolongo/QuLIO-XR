@@ -37,6 +37,8 @@ feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, K)) >> [show_l
 
 # finalizing sqarql with satellite conditions
 finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_PREP(P, Y, O) & MST_VAR(O, V)) >> [show_line("\nEnriching POLAR (copular)+prep..."), -PRE_SPARQL(E, X, Y, Q), -MST_PREP(P, Y, O), -MST_VAR(O, V), feed_prep_sparql(E, X, Y, P, O, V, Q), finalize_sparql() ]
+finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_PREP(P, X, O) & MST_VAR(O, V)) >> [show_line("\nEnriching POLAR (copular)+prep..."), -PRE_SPARQL(E, X, Y, Q), -MST_PREP(P, X, O), -MST_VAR(O, V), feed_prep_sparql(E, X, Y, P, O, V, Q), finalize_sparql() ]
+
 finalize_sparql() / PRE_SPARQL(E, X, Y, Q) >> [show_line("\nFinalizing POLAR verb-prep (copular)..."), -PRE_SPARQL(E, X, Y, Q), +SPARQL(Q)]
 
 
