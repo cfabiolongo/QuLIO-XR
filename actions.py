@@ -1514,6 +1514,32 @@ class feed_adj_sparql(Action):
 
 
 
+class feed_adv_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
+
+        # print(arg1)
+        # print(arg2)
+        # print(arg3)
+        # print(arg4)
+        # print(arg5)
+
+        e = str(arg1).split("'")[3]
+        x = str(arg2).split("'")[3]
+        y = str(arg3).split("'")[3]
+
+        adv = str(arg4).split("'")[3]
+        adv = adv.split(":")[0][:-2]
+
+        q = str(arg5).split("'")[3][:-1]
+
+        # +QUERY("Colonel West sells slowly missiles?")
+
+        q = q + f" ?{e} lodo:hasAdv ?d{e}. ?d{e} rdf:type lodo:{adv}. "+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
+
+
 class join_cmps(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3):

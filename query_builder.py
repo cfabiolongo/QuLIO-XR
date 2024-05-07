@@ -3,11 +3,16 @@ from actions import *
 
 class SPARQL(Reactor): pass
 
+
+# ------- PRE-PROCESSING RULES -------
+
 # ----- Modelling MST_BINDS shape -----
 feed_sparql() / (MST_VAR(X, Y) & MST_BIND(Y, Z)) >> [show_line("\nModelling MTS_BINDS shape..."), -MST_BIND(Y, Z), +MST_BIND(X, Z), feed_sparql()]
 
 # ----- Joining compound entities -----
 feed_sparql() / (MST_VAR(X, Y) & MST_COMP(Y, Z)) >> [show_line("\nJoining compound..."), -MST_VAR(X, Y), -MST_COMP(Y, Z), join_cmps(X, Y, Z), feed_sparql()]
+
+
 
 # ----- WHO questions -----
 feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Z, W) & MST_VAR(T, "Who01:WP")) >> [show_line("\nWHO detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "Who01:WP"), feed_query_sparql(X, Y), feed_sparql()]
@@ -38,6 +43,9 @@ feed_sparql() / (MST_ACT("Be01:VBZ", E, X, Y) & MST_VAR(X, W) & MST_VAR(Y, K)) >
 feed_sparql() / (MST_ACT(Z, E, X, Y) & MST_VAR(X, W) & MST_VAR(Y, K)) >> [show_line("\nPOLAR detected..."), -MST_ACT(Z, E, X, Y), -MST_VAR(X, W), -MST_VAR(Y, K), feed_query_sparql(Z, E, X, Y, W, K), finalize_sparql()]
 
 
+
+# ------- FINALIZATION RULES -------
+
 # adding preposition triples for copular
 finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_PREP(P, Y, O) & MST_VAR(O, V)) >> [show_line("\nEnriching POLAR (copular) + obj-prep..."), -PRE_SPARQL(E, X, Y, Q), -MST_PREP(P, Y, O), -MST_VAR(O, V), feed_cop_prep_sparql(E, X, Y, P, O, V, Q), finalize_sparql() ]
 finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_PREP(P, X, O) & MST_VAR(O, V)) >> [show_line("\nEnriching POLAR (copular) + subj-prep..."), -PRE_SPARQL(E, X, Y, Q), -MST_PREP(P, X, O), -MST_VAR(O, V), feed_cop_prep_sparql(E, X, Y, P, O, V, Q), finalize_sparql() ]
@@ -49,8 +57,10 @@ finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_PREP(P, E, O) & MST_VAR(O, V))
 finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_BIND(X, A)) >> [show_line("\nAdding adjective to verb subject..."), -PRE_SPARQL(E, X, Y, Q), -MST_BIND(X, A), feed_adj_sparql(E, X, Y, X, A, Q), finalize_sparql()]
 finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_BIND(Y, A)) >> [show_line("\nAdding adjective to verb object..."), -PRE_SPARQL(E, X, Y, Q), -MST_BIND(Y, A), feed_adj_sparql(E, X, Y, Y, A, Q), finalize_sparql()]
 
+# adding adverbs triples
+finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_VAR(E, D)) >> [show_line("\nAdding adverb..."), -PRE_SPARQL(E, X, Y, Q), -MST_VAR(E, D), feed_adv_sparql(E, X, Y, D, Q), finalize_sparql()]
 
+# finalizing sparql
 finalize_sparql() / PRE_SPARQL(E, X, Y, Q) >> [show_line("\nFinalizing SPARQL..."), -PRE_SPARQL(E, X, Y, Q), +SPARQL(Q)]
-
 
 +SPARQL(X) >> [show_line("\nQuery SPARQL built: \n", X), log("SPARQL: ", X), submit_query_sparql(X)]
