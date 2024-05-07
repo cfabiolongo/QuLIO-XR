@@ -1357,6 +1357,73 @@ class submit_query_sparql(Action):
         print("\nResult: ", result)
 
 
+
+
+class feed_wh_cop_query_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
+
+        print(arg1)
+        print(arg2)
+        print(arg3)
+        print(arg4)
+        print(arg5)
+
+        e = str(arg1).split("'")[3]
+        x = str(arg2).split("'")[3]
+        y = str(arg3).split("'")[3]
+
+        val_x = str(arg4).split("'")[1] # Who
+
+        val_y = str(arg5).split("'")[3]
+        val_y = val_y.split(":")[0][:-2]
+
+        # +QUERY("Who is Colonel West?")
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        q = p + f" SELECT ?{val_x} WHERE "+"{ "
+        q = q + f"?{val_x} rdf:type ?{val_y}. "+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
+
+
+
+class feed_wh_query_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
+
+        print(arg1)
+        print(arg2)
+        print(arg3)
+        print(arg4)
+        print(arg5)
+        print(arg6)
+
+        v = str(arg1).split("'")[3]
+        verb = v.split(":")[0][:-2]
+
+        e = str(arg2).split("'")[3]
+        x = str(arg3).split("'")[3]
+        y = str(arg4).split("'")[3]
+
+        val_x = str(arg5).split("'")[1] # Who
+
+        val_y = str(arg6).split("'")[3]
+        val_y = val_y.split(":")[0][:-2]
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        q = p + f" SELECT ?{val_x} WHERE "+"{ "
+        q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type ?{val_x}. ?{y} rdf:type lodo:{val_y}."+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
+
+
+
+
 class feed_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
