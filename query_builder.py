@@ -6,10 +6,10 @@ class SPARQL(Reactor): pass
 
 # ------- PRE-PROCESSING RULES -------
 
-# ----- Modelling MST_BINDS shape -----
+# Modelling MST_BINDS shape -----
 feed_sparql() / (MST_VAR(X, Y) & MST_BIND(Y, Z)) >> [show_line("\nModelling MTS_BINDS shape..."), -MST_BIND(Y, Z), +MST_BIND(X, Z), feed_sparql()]
 
-# ----- Joining compound entities -----
+# Joining compound entities -----
 feed_sparql() / (MST_VAR(X, Y) & MST_COMP(Y, Z)) >> [show_line("\nJoining compound..."), -MST_VAR(X, Y), -MST_COMP(Y, Z), join_cmps(X, Y, Z), feed_sparql()]
 
 
