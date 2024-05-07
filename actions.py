@@ -1414,7 +1414,7 @@ class feed_cop_sparql(Action):
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
 
-class feed_prep_sparql(Action):
+class feed_cop_prep_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7):
 
@@ -1442,10 +1442,75 @@ class feed_prep_sparql(Action):
 
         # +QUERY("Colonel West is President of Cuba?")
 
-        q = q + f" ?{y} lodo:hasPrep ?p{y}. ?p{y} rdf:type lodo:{prep}. ?p{y} lodo:hasObj ?{prep_obj}. ?{prep_obj} rdf:type lodo:{prep_obj_val}."+"}"
+        q = q + f" ?{y} lodo:hasPrep ?p{y}. ?p{y} rdf:type lodo:{prep}. ?p{y} lodo:hasObject ?{prep_obj}. ?{prep_obj} rdf:type lodo:{prep_obj_val}."+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
+
+
+class feed_prep_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7):
+
+        # print(arg1)
+        # print(arg2)
+        # print(arg3)
+        # print(arg4)
+        # print(arg5)
+        # print(arg6)
+        # print(arg7)
+
+        e = str(arg1).split("'")[3]
+        x = str(arg2).split("'")[3]
+        y = str(arg3).split("'")[3]
+
+        p = str(arg4).split("'")[3]
+        prep = p.split(":")[0][:-2]
+
+        prep_obj = str(arg5).split("'")[3]
+
+        prep_obj_val = str(arg6).split("'")[3]
+        prep_obj_val = prep_obj_val.split(":")[0][:-2]
+
+        q = str(arg7).split("'")[3][:-1]
+
+        # +QUERY("Colonel West sells missiles to Cuba?")
+
+        q = q + f" ?{e} lodo:hasPrep ?p{e}. ?p{e} rdf:type lodo:{prep}. ?p{e} lodo:hasObject ?{prep_obj}. ?{prep_obj} rdf:type lodo:{prep_obj_val}."+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
+
+
+
+class feed_adj_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
+
+        # print(arg1)
+        # print(arg2)
+        # print(arg3)
+        # print(arg4)
+        # print(arg5)
+        # print(arg6)
+
+        e = str(arg1).split("'")[3]
+        x = str(arg2).split("'")[3]
+        y = str(arg3).split("'")[3]
+
+        target = str(arg4).split("'")[3]
+
+        adj = str(arg5).split("'")[3]
+        adj = adj.split(":")[0][:-2]
+
+        q = str(arg6).split("'")[3][:-1]
+
+        # +QUERY("Colonel West sells long missiles?")
+        # +QUERY("The good Colonel West sells missiles?")
+        # +QUERY("The good Colonel West sells long missiles?")
+
+        q = q + f" ?{target} lodo:hasAdj ?a{target}. ?a{target} rdf:type lodo:{adj}. "+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
 
 
 
