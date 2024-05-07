@@ -1384,7 +1384,7 @@ class feed_wh_cop_query_sparql(Action):
         p = p + "PREFIX lodo: <http://test.org/west.owl#> "
 
         q = p + f" SELECT ?{val_x} WHERE "+"{ "
-        q = q + f"?{val_x} rdf:type ?{val_y}. "+"}"
+        q = q + f"?i rdf:type ?{val_x}. FILTER(STRSTARTS(str(?i), str(lodo:{val_y}))) "+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
