@@ -36,9 +36,9 @@ feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "Where01:WRB") & MST_VAR(X, "?
 # ----- WHEN questions -----
 
 # Active (When does Colonel West leave?)
-feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Y, "When01:WRB") & MST_VAR(Z, W) & MST_VAR(T, "?")) >> [show_line("\nWHEN (active) detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Y, "When01:WRB"), -MST_VAR(Z, W), -MST_VAR(T, "?"), feed_query_sparql(V, E, X, Y, W, "?")]
+feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "When01:WRB") & MST_VAR(X, W) & MST_VAR(Y, "?")) >> [show_line("\nWHEN (active) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(E, "When01:WRB"), -MST_VAR(Y, W), -MST_VAR(Y, "?"), feed_when_sparql(V, E, X, Y, W), finalize_sparql()]
 # Passive (When Colonel West was born?)
-feed_sparql() / (MST_ACT(X, Y, Z, T) & MST_VAR(Y, "When01:WRB") & MST_VAR(Z, "?") & MST_VAR(T, K)) >> [show_line("\nWHEN (passive) detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Y, "When01:WRB"), -MST_VAR(Z, K), -MST_VAR(T, "?"), feed_query_sparql(V, E, X, Y, K, "?")]
+feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "When01:WRB") & MST_VAR(X, "?") & MST_VAR(Y, K)) >> [show_line("\nWHEN (passive) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(E, "When01:WRB"), -MST_VAR(Y, K), -MST_VAR(Y, "?"), feed_when_pass_sparql(V, E, X, Y, K), finalize_sparql()]
 
 
 
