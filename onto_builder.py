@@ -5,7 +5,7 @@ from actions import *
 
 # ONTOLOGY BUILDER
 
-process_onto() / ID(I) >> [aggr_ent(), valorize(), create_adj(), create_adv(), create_gnd_prep(), create_prep(), create_verb(), create_head(), create_body(), finalize_onto(), create_ner(), saveOnto(), -ID(I)]
+process_onto() / ID(I) >> [aggr_ent(), valorize(), create_adj(), create_adv(), create_gnd_prep(), create_ner(), create_prep(), create_verb(), create_head(), create_body(), finalize_onto(), saveOnto(), -ID(I)]
 
 # Grounds aggregation
 aggr_ent() / (GND(X, Y, Z) & GND(X, Y, K) & neq(Z, K)) >> [show_line("\naggregating entity: ", Y), -GND(X, Y, Z), -GND(X, Y, K), aggrEntity(X, Y, Z, K), aggr_ent()]
@@ -52,8 +52,8 @@ create_verb() / (ACTION("ROOT", "FLAT", V, D, X, "__") & GND("FLAT", X, K) & ID(
 create_verb() >> [show_line("\nverb creation done.")]
 
 # Named Entity Recognition production
-#create_ner() / (NER("GPE", Y) & ID(I)) >> [show_line("\nCreating GPE NER: ", Y), -NER("GPE", Y), createPlace(I, Y), create_ner()]
-#create_ner() / (NER("DATE", Y) & ID(I)) >> [show_line("\nCreating DATE NER: ", Y), -NER("DATE", Y), createDate(I, Y), create_ner()]
+create_ner() / (NER("GPE", Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, Y) & ID(I)) >> [show_line("\nCreating GPE NER: ", Y), -NER("GPE", Y), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, Y), createPlace(I, Y), create_ner()]
+create_ner() / (NER("DATE", Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, Y) & ID(I)) >> [show_line("\nCreating DATE NER: ", Y), -NER("DATE", Y), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, Y), createDate(I, Y), create_ner()]
 create_ner() / (NER(X, Y) & ID(I)) >> [-NER(X, Y), create_ner()]
 create_ner() / ID(I) >> [show_line("\nNER creation done.")]
 
