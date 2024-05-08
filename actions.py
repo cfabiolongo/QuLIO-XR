@@ -1350,16 +1350,35 @@ class submit_query_sparql(Action):
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
+        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        # sync_reasoner_hermit(my_world, infer_property_values=True)
+
         sync_reasoner_hermit(my_world)
+
         graph = my_world.as_rdflib_graph()
         result = list(graph.query(query))
 
-        print("\nResult: ", result)
+        if (True in result) or (False in result):
+            print("\nResult: ", result)
+        else:
+
+            names = []
+            EXCLUDED = ['Class', 'NamedIndividual']
+
+            for item in result:
+                item = str(item).split("#")[1]
+                item_filtered = item.split("'")[0]
+                if item_filtered not in EXCLUDED:
+                    names.append(item_filtered)
+
+            # Rimuovi duplicati
+            unique_names = list(set(names))
+            print(unique_names)
 
 
 
 
-class feed_wh_cop_query_sparql(Action):
+class feed_who_cop_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
 
@@ -1390,7 +1409,7 @@ class feed_wh_cop_query_sparql(Action):
 
 
 
-class feed_wh_query_sparql(Action):
+class feed_who_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
 
@@ -1421,6 +1440,73 @@ class feed_wh_query_sparql(Action):
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
+
+
+class feed_where_query_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
+
+        print(arg1)
+        print(arg2)
+        print(arg3)
+        print(arg4)
+        print(arg5)
+        print(arg6)
+
+        v = str(arg1).split("'")[3]
+        e = str(arg2).split("'")[3]
+        x = str(arg3).split("'")[3]
+        y = str(arg4).split("'")[3]
+        val_x = str(arg5).split("'")[3]
+        val_y = str(arg6).split("'")[1]
+
+        verb = v.split(":")[0][:-2]
+        subject = val_x.split(":")[0][:-2]
+        object = val_y.split(":")[0][:-2]
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        # +QUERY("Where does Colonel West live?")
+
+        q = p + " ASK WHERE { "
+
+        q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type lodo:{subject}. ?{y} rdf:type lodo:{object}."+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
+
+
+
+
+class feed_what_query_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
+
+        print(arg1)
+        print(arg2)
+        print(arg3)
+        print(arg4)
+        print(arg5)
+
+        v = str(arg1).split("'")[3]
+        e = str(arg2).split("'")[3]
+        x = str(arg3).split("'")[3]
+        y = str(arg4).split("'")[3]
+        y_value = str(arg5).split("'")[3]
+
+        verb = v.split(":")[0][:-2]
+        subject = y_value.split(":")[0][:-2]
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        # +QUERY("What does Colonel West sell?")
+
+        q = p + " SELECT ?what WHERE { "
+
+        q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type lodo:{subject}. ?{y} rdf:type ?what."+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
 
 
 
