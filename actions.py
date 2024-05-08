@@ -1442,7 +1442,7 @@ class feed_who_query_sparql(Action):
 
 
 
-class feed_where_query_sparql(Action):
+class feed_where_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
 
@@ -1473,6 +1473,38 @@ class feed_where_query_sparql(Action):
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
+
+
+class feed_where_pass_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
+
+        print(arg1)
+        print(arg2)
+        print(arg3)
+        print(arg4)
+        print(arg5)
+
+        v = str(arg1).split("'")[3]
+        e = str(arg2).split("'")[3]
+        x = str(arg3).split("'")[3]
+        y = str(arg4).split("'")[3]
+        val_y = str(arg5).split("'")[3]
+
+        verb = v.split(":")[0][:-2]
+
+        object = val_y.split(":")[0][:-2]
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        # +QUERY("Where Colonel West was born?")
+
+        q = p + " SELECT ?where WHERE { "
+
+        q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasObject ?{y}. ?{y} rdf:type lodo:{object}. ?{e} lodo:hasPrep ?p. ?p lodo:hasObject ?w. ?w rdf:type ?where. "+"}"
+
+        self.assert_belief(PRE_SPARQL(e, x, y, q))
 
 
 
