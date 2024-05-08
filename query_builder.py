@@ -29,9 +29,9 @@ feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(X, W) & MST_VAR(Y, "What01:WP")) 
 # ----- WHERE questions -----
 
 # Active (Where does Colonel West live?)
-feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "Where01:WRB") & MST_VAR(X, W) & MST_VAR(Y, "?")) >> [show_line("\nWHERE (active) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(E, "Where01:WRB"), -MST_VAR(Y, W), -MST_VAR(Y, "?"), feed_where_query_sparql(V, E, X, Y, W, "?")]
+feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "Where01:WRB") & MST_VAR(X, W) & MST_VAR(Y, "?")) >> [show_line("\nWHERE (active) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(E, "Where01:WRB"), -MST_VAR(Y, W), -MST_VAR(Y, "?"), feed_where_query_sparql(V, E, X, Y, W), finalize_sparql()]
 # Passive (Where Colonel West was born?)
-feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "Where01:WRB") & MST_VAR(X, "?") & MST_VAR(Y, K)) >> [show_line("\nWHERE (passive) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(E, "Where01:WRB"), -MST_VAR(Y, K), -MST_VAR(Y, "?"), feed_where_query_sparql(V, E, X, Y, K, "?")]
+feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(E, "Where01:WRB") & MST_VAR(X, "?") & MST_VAR(Y, K)) >> [show_line("\nWHERE (passive) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(E, "Where01:WRB"), -MST_VAR(Y, K), -MST_VAR(Y, "?"), feed_where_query_sparql(V, E, X, Y, K), finalize_sparql()]
 
 # ----- WHEN questions -----
 
