@@ -81,6 +81,7 @@ LANGUAGE = config.get('PARSING', 'LANGUAGE')
 ASSIGN_RULES_LEMMAS = config.get('PARSING', 'ASSIGN_RULES_LEMMAS').split(", ")
 ASSIGN_RULES_POS = config.get('PARSING', 'ASSIGN_RULES_POS').split(", ")
 AXIOMS_WORDS = config.get('PARSING', 'AXIOMS_WORDS').split(", ")
+LEMMATIZATION = config.getboolean('PARSING', 'LEMMATIZATION')
 
 WAIT_TIME = config.getint('AGENT', 'WAIT_TIME')
 LOG_ACTIVE = config.getboolean('AGENT', 'LOG_ACTIVE')
@@ -1091,7 +1092,7 @@ class parse_rules(Action):
             DISOK = False
 
         print("\n", sent)
-        deps = parser.get_deps(sent, True, DISOK)
+        deps = parser.get_deps(sent, LEMMATIZATION, DISOK)
         print("\n", deps)
         parser.set_last_deps(deps)
 

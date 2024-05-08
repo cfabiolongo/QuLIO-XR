@@ -22,6 +22,8 @@ GMC_POS = config.get('GROUNDED_MEANING_CONTEXT', 'GMC_POS').split(", ")
 
 OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
 
+LEMMATIZATION = config.getboolean('PARSING', 'LEMMATIZATION')
+
 
 
 class Parse(object):
@@ -432,12 +434,10 @@ def main():
     VERBOSE = True
 
     parser = Parse(VERBOSE)
-
-    LEMMMATIZED = True
     DISOK = True
 
     sentence = "They are going to travel from Heathrow to Edinburgh by overnight coach"
-    deps = parser.get_deps(sentence, LEMMMATIZED, DISOK)
+    deps = parser.get_deps(sentence, LEMMATIZATION, DISOK)
     parser.set_last_deps(deps)
     ner = parser.get_last_ner()
     print("\nner: ", ner)
