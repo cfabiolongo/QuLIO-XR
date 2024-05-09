@@ -1398,20 +1398,21 @@ class submit_explo_sparql(Action):
         graph = my_world.as_rdflib_graph()
         result = list(graph.query(query))
 
-        print("\nResult: ", result)
-
-        names = []
-        EXCLUDED = ['Class', 'NamedIndividual']
+        # print("\nResult: ", result)
 
         for item in result:
-            item = str(item).split("#")[1]
-            item_filtered = item.split("'")[0]
-            if item_filtered not in EXCLUDED:
-                names.append(item_filtered)
+            verb = str(item).split(",")[0]
+            verb_filtered = verb.split("#")[1][:-2]
 
-        # Rimuovi duplicati
-        unique_names = list(set(names))
-        print(unique_names)
+            subject = str(item).split(",")[1]
+            subject_filtered = subject.split("#")[1][:-2]
+
+            object = str(item).split(",")[2]
+            object_filtered = object.split("#")[1][:-3]
+
+            triple = f"({verb_filtered}, {subject_filtered}, {object_filtered})"
+            print(triple)
+
 
 
 
