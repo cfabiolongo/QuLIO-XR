@@ -143,9 +143,6 @@ class c4(Procedure): pass
 class c5(Procedure): pass
 class c6(Procedure): pass
 
-# Fol query utterance
-class q(Procedure): pass
-
 # normal requests beliefs
 class GROUND(Belief): pass
 class PRE_MOD(Belief): pass
@@ -191,8 +188,16 @@ class NER(Belief): pass
 class feed_sparql(Procedure): pass
 class finalize_sparql(Procedure): pass
 
+# Nominal query sparql belief
 class SPARQL(Reactor): pass
+
+# Pre-nominal query sparql belief
 class PRE_SPARQL(Belief): pass
+
+# Explorative query sparql belief
+class EXPLO_SPARQL(Reactor): pass
+
+class ALL(Belief): pass
 
 class log(Action):
     """log direct assertions from keyboard"""
@@ -1342,7 +1347,7 @@ class create_IMP_MST_ACT(Action):
 # ----------------------------------
 
 
-class submit_query_sparql(Action):
+class submit_sparql(Action):
     """Submit a Query Sparql to Reasoner"""
     def execute(self, arg1):
 
@@ -1377,16 +1382,64 @@ class submit_query_sparql(Action):
 
 
 
+class submit_explo_sparql(Action):
+    """Submit a Query Sparql to Reasoner"""
+    def execute(self, arg1):
+
+        query = str(arg1).split("'")[3]
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        sync_reasoner_hermit(my_world, infer_property_values=True)
+        # sync_reasoner_hermit(my_world)
+
+        graph = my_world.as_rdflib_graph()
+        result = list(graph.query(query))
+
+        print("\nResult: ", result)
+
+        names = []
+        EXCLUDED = ['Class', 'NamedIndividual']
+
+        for item in result:
+            item = str(item).split("#")[1]
+            item_filtered = item.split("'")[0]
+            if item_filtered not in EXCLUDED:
+                names.append(item_filtered)
+
+        # Rimuovi duplicati
+        unique_names = list(set(names))
+        print(unique_names)
+
+
+
+class feed_all_sparql(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1):
+
+        print(arg1)
+
+        subject = str(arg1).split("'")[3]
+
+        # +Q("Colonel_West")
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+
+        q = p + f" SELECT ?i ?s ?o"+" WHERE { "
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb.  ?i lodo:hasSubject ?s.  ?i lodo:hasObject ?o.  "+"}"
+        # q = q + f"?i rdfs:subClassOf lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. "+"}"
+
+        self.assert_belief(EXPLO_SPARQL(q))
+
+
 
 class feed_who_cop_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
-
-        print(arg1)
-        print(arg2)
-        print(arg3)
-        print(arg4)
-        print(arg5)
 
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
@@ -1466,12 +1519,6 @@ class feed_where_pass_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
 
-        print(arg1)
-        print(arg2)
-        print(arg3)
-        print(arg4)
-        print(arg5)
-
         v = str(arg1).split("'")[3]
         e = str(arg2).split("'")[3]
         x = str(arg3).split("'")[3]
@@ -1550,12 +1597,6 @@ class feed_what_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
 
-        print(arg1)
-        print(arg2)
-        print(arg3)
-        print(arg4)
-        print(arg5)
-
         v = str(arg1).split("'")[3]
         e = str(arg2).split("'")[3]
         x = str(arg3).split("'")[3]
@@ -1581,13 +1622,6 @@ class feed_what_query_sparql(Action):
 class feed_query_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
-
-        # print(arg1)
-        # print(arg2)
-        # print(arg3)
-        # print(arg4)
-        # print(arg5)
-        # print(arg6)
 
         v = str(arg1).split("'")[3]
         e = str(arg2).split("'")[3]
@@ -1639,14 +1673,6 @@ class feed_cop_prep_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7):
 
-        # print(arg1)
-        # print(arg2)
-        # print(arg3)
-        # print(arg4)
-        # print(arg5)
-        # print(arg6)
-        # print(arg7)
-
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
         y = str(arg3).split("'")[3]
@@ -1672,14 +1698,6 @@ class feed_cop_prep_sparql(Action):
 class feed_prep_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7):
-
-        # print(arg1)
-        # print(arg2)
-        # print(arg3)
-        # print(arg4)
-        # print(arg5)
-        # print(arg6)
-        # print(arg7)
 
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
@@ -1707,13 +1725,6 @@ class feed_adj_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
 
-        # print(arg1)
-        # print(arg2)
-        # print(arg3)
-        # print(arg4)
-        # print(arg5)
-        # print(arg6)
-
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
         y = str(arg3).split("'")[3]
@@ -1738,12 +1749,6 @@ class feed_adj_sparql(Action):
 class feed_adv_sparql(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
-
-        # print(arg1)
-        # print(arg2)
-        # print(arg3)
-        # print(arg4)
-        # print(arg5)
 
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]

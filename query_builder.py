@@ -6,13 +6,13 @@ class SPARQL(Reactor): pass
 
 # ------- PRE-PROCESSING RULES -------
 
+feed_sparql() / ALL(X) >> [show_line(f"\nExtracting all having {X} as subject/object..."), -ALL(X), feed_all_sparql(X)]
+
 # Modelling MST_BINDS shape -----
 feed_sparql() / (MST_VAR(X, Y) & MST_BIND(Y, Z)) >> [show_line("\nModelling MTS_BINDS shape..."), -MST_BIND(Y, Z), +MST_BIND(X, Z), feed_sparql()]
 
 # Joining compound entities -----
 feed_sparql() / (MST_VAR(X, Y) & MST_COMP(Y, Z)) >> [show_line("\nJoining compound..."), -MST_VAR(X, Y), -MST_COMP(Y, Z), join_cmps(X, Y, Z), feed_sparql()]
-
-
 
 # ----- WHO questions -----
 # Active - copular (e.g. Who is Colonel West?)
@@ -71,4 +71,6 @@ finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_VAR(E, D)) >> [show_line("\nAd
 # finalizing sparql
 finalize_sparql() / PRE_SPARQL(E, X, Y, Q) >> [show_line("\nFinalizing SPARQL..."), -PRE_SPARQL(E, X, Y, Q), +SPARQL(Q)]
 
-+SPARQL(X) >> [show_line("\nQuery SPARQL built: \n", X), log("SPARQL: ", X), submit_query_sparql(X)]
++SPARQL(X) >> [show_line("\nQuery SPARQL built: \n", X), log("SPARQL: ", X), submit_sparql(X)]
++EXPLO_SPARQL(X) >> [show_line("\nLaunching explorative query SPARQL: \n", X), log("SPARQL: ", X), submit_explo_sparql(X)]
+

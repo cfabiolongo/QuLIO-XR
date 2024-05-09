@@ -4,21 +4,19 @@ from actions import *
 # Clauses KB manual feeding beliefs
 class FEED(Reactor): pass
 class QUERY(Reactor): pass
+class Q(Reactor): pass
 
 
 # sentences for reasoning purposes
 c1() >> [+FEED("Colonel West is an American")]
-c2() >> [+FEED("Cuba is a hostile nation")]
+c2() >> [+FEED("Nono is a hostile nation")]
 c3() >> [+FEED("missiles are weapons")]
-c4() >> [+FEED("the Colonel West sells missiles to Cuba")]
+c4() >> [+FEED("the Colonel West sells missiles to Nono")]
 c5() >> [+FEED("When an American sells weapons to a hostile nation, that American is a criminal")]
-
-# Query
-q() >> [+QUERY("Colonel West sells missiles to Cuba")]
 
 # testing rules
 +FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), log("Feed", X), show_ct(), +LISTEN("TEST")]
-
++Q(X) >> [reset_ct(), log("Q", X), show_ct(), +ALL(X), feed_sparql()]
 +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_sparql(), log("Query", X), show_ct()]
 # +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), log("Query",X), show_ct()]
 
