@@ -6,8 +6,34 @@ import configparser
 from datetime import datetime
 from owlready2 import *
 
+config = configparser.ConfigParser()
+config.read('config.ini')
 
+cnt = itertools.count(1)
+dav = itertools.count(1)
+
+VERBOSE = config.getboolean('PARSING', 'VERBOSE')
+LANGUAGE = config.get('PARSING', 'LANGUAGE')
+ASSIGN_RULES_LEMMAS = config.get('PARSING', 'ASSIGN_RULES_LEMMAS').split(", ")
+ASSIGN_RULES_POS = config.get('PARSING', 'ASSIGN_RULES_POS').split(", ")
+AXIOMS_WORDS = config.get('PARSING', 'AXIOMS_WORDS').split(", ")
+LEMMATIZATION = config.getboolean('PARSING', 'LEMMATIZATION')
+
+WAIT_TIME = config.getint('AGENT', 'WAIT_TIME')
+LOG_ACTIVE = config.getboolean('AGENT', 'LOG_ACTIVE')
 FILE_NAME = config.get('AGENT', 'FILE_NAME')
+
+INCLUDE_ACT_POS = config.getboolean('POS', 'INCLUDE_ACT_POS')
+INCLUDE_NOUNS_POS = config.getboolean('POS', 'INCLUDE_NOUNS_POS')
+INCLUDE_ADJ_POS = config.getboolean('POS', 'INCLUDE_ADJ_POS')
+INCLUDE_PRP_POS = config.getboolean('POS', 'INCLUDE_PRP_POS')
+INCLUDE_ADV_POS = config.getboolean('POS', 'INCLUDE_ADV_POS')
+OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
+
+parser = Parse(VERBOSE)
+m = ManageFols(VERBOSE, LANGUAGE)
+
+owl_obj_dict = {}
 
 try:
     my_onto = get_ontology(FILE_NAME).load()
@@ -65,36 +91,6 @@ with my_onto:
 
     class hasValue(DataProperty):
         range = [int]
-
-
-owl_obj_dict = {}
-
-
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-cnt = itertools.count(1)
-dav = itertools.count(1)
-
-VERBOSE = config.getboolean('PARSING', 'VERBOSE')
-LANGUAGE = config.get('PARSING', 'LANGUAGE')
-ASSIGN_RULES_LEMMAS = config.get('PARSING', 'ASSIGN_RULES_LEMMAS').split(", ")
-ASSIGN_RULES_POS = config.get('PARSING', 'ASSIGN_RULES_POS').split(", ")
-AXIOMS_WORDS = config.get('PARSING', 'AXIOMS_WORDS').split(", ")
-LEMMATIZATION = config.getboolean('PARSING', 'LEMMATIZATION')
-
-WAIT_TIME = config.getint('AGENT', 'WAIT_TIME')
-LOG_ACTIVE = config.getboolean('AGENT', 'LOG_ACTIVE')
-
-INCLUDE_ACT_POS = config.getboolean('POS', 'INCLUDE_ACT_POS')
-INCLUDE_NOUNS_POS = config.getboolean('POS', 'INCLUDE_NOUNS_POS')
-INCLUDE_ADJ_POS = config.getboolean('POS', 'INCLUDE_ADJ_POS')
-INCLUDE_PRP_POS = config.getboolean('POS', 'INCLUDE_PRP_POS')
-INCLUDE_ADV_POS = config.getboolean('POS', 'INCLUDE_ADV_POS')
-OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
-
-parser = Parse(VERBOSE)
-m = ManageFols(VERBOSE, LANGUAGE)
 
 
 
@@ -1428,7 +1424,7 @@ class feed_all_sparql(Action):
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?i ?s ?o"+" WHERE { "
         q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb.  ?i lodo:hasSubject ?s.  ?i lodo:hasObject ?o.  "+"}"
@@ -1454,7 +1450,7 @@ class feed_who_cop_query_sparql(Action):
         # +QUERY("Who is Colonel West?")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?{val_x} WHERE "+"{ "
         q = q + f"?i rdf:type ?{val_x}. FILTER(STRSTARTS(str(?i), str(lodo:{val_y}))) "+"}"
@@ -1480,7 +1476,7 @@ class feed_who_query_sparql(Action):
         val_y = val_y.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?{val_x} WHERE "+"{ "
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type ?{val_x}. ?{y} rdf:type lodo:{val_y}."+"}"
@@ -1504,7 +1500,7 @@ class feed_where_sparql(Action):
         subject = val_x.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         # +QUERY("Where does Colonel West live?")
 
@@ -1531,7 +1527,7 @@ class feed_where_pass_sparql(Action):
         object = val_y.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         # +QUERY("Where Colonel West was born?")
 
@@ -1556,7 +1552,7 @@ class feed_when_sparql(Action):
         subject = val_x.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         # +QUERY("When does Colonel West leave?")
 
@@ -1583,7 +1579,7 @@ class feed_when_pass_sparql(Action):
         object = val_y.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         # +QUERY("When Colonel West was born?")
 
@@ -1608,7 +1604,7 @@ class feed_what_query_sparql(Action):
         subject = y_value.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         # +QUERY("What does Colonel West sell?")
 
@@ -1636,7 +1632,7 @@ class feed_query_sparql(Action):
         object = val_y.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         # +QUERY("Colonel West sells missiles?")
 
@@ -1661,7 +1657,7 @@ class feed_cop_sparql(Action):
         object = val_y.split(":")[0][:-2]
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX lodo: <http://test.org/west.owl#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + "ASK WHERE { "
 
