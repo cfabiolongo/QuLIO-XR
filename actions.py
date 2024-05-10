@@ -29,6 +29,7 @@ INCLUDE_ADJ_POS = config.getboolean('POS', 'INCLUDE_ADJ_POS')
 INCLUDE_PRP_POS = config.getboolean('POS', 'INCLUDE_PRP_POS')
 INCLUDE_ADV_POS = config.getboolean('POS', 'INCLUDE_ADV_POS')
 OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
+SEP = config.get('POS', 'SEP')
 
 parser = Parse(VERBOSE)
 m = ManageFols(VERBOSE, LANGUAGE)
@@ -505,7 +506,7 @@ class fillActRule(Action):
     def execute(self, arg1, arg2, arg3, arg4, arg5):
 
         rule = str(arg1).split("'")[3]
-        verb = str(arg2).split("'")[3].replace(":", ".")
+        verb = str(arg2).split("'")[3].replace(":", SEP)
         dav = str(arg3).split("'")[3]
         subj = str(arg4).split("'")[3]
         obj = str(arg5).split("'")[3]
@@ -527,9 +528,9 @@ class fillPassActRule(Action):
     def execute(self, arg1, arg2, arg3, arg4):
 
         rule = str(arg1).split("'")[3]
-        verb = str(arg2).split("'")[3].replace(":", ".")
+        verb = str(arg2).split("'")[3].replace(":", SEP)
         dav = str(arg3).split("'")[3]
-        obj = str(arg4).split("'")[3].replace(":", ".")
+        obj = str(arg4).split("'")[3].replace(":", SEP)
 
         # creating subclass of Verb
         types.new_class(verb, (Verb,))
@@ -548,9 +549,9 @@ class fillIntraActRule(Action):
     def execute(self, arg1, arg2, arg3, arg4):
 
         rule = str(arg1).split("'")[3]
-        verb = str(arg2).split("'")[3].replace(":", ".")
+        verb = str(arg2).split("'")[3].replace(":", SEP)
         dav = str(arg3).split("'")[3]
-        subj = str(arg4).split("'")[3].replace(":", ".")
+        subj = str(arg4).split("'")[3].replace(":", SEP)
 
         # creating subclass of Verb
         types.new_class(verb, (Verb,))
@@ -571,7 +572,7 @@ class fillGndRule(Action):
         hand_side = str(arg0).split("'")[1]
         rule = str(arg1).split("'")[3]
         var = str(arg2).split("'")[3]
-        value = str(arg3).split("'")[3].replace(":", ".")
+        value = str(arg3).split("'")[3].replace(":", SEP)
 
         # creating subclass of Entity
         types.new_class(value, (Entity,))
@@ -597,7 +598,7 @@ class fillHeadAdjRule(Action):
 
         rule = str(arg1).split("'")[3]
         var = str(arg2).split("'")[3]
-        adj_str = str(arg3).split("'")[3].replace(":", ".")
+        adj_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # creating subclass of Adjective
         types.new_class(adj_str, (Adjective,))
@@ -614,7 +615,7 @@ class fillAdjRule(Action):
 
         rule = str(arg1).split("'")[3]
         var = str(arg2).split("'")[3]
-        adj_str = str(arg3).split("'")[3].replace(":", ".")
+        adj_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # creating subclass of Adjective
         types.new_class(adj_str, (Adjective,))
@@ -636,7 +637,7 @@ class fillAdvRule(Action):
 
         rule = str(arg1).split("'")[3]
         var = str(arg2).split("'")[3]
-        adv_str = str(arg3).split("'")[3].replace(":", ".")
+        adv_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # creating subclass of Adverb
         types.new_class(adv_str, (Adverb,))
@@ -659,7 +660,7 @@ class fillPrepRule(Action):
         hand_side = str(arg0).split("'")[1]
         rule = str(arg1).split("'")[3]
         var_master = str(arg2).split("'")[3]
-        value = str(arg3).split("'")[3].replace(":", ".")
+        value = str(arg3).split("'")[3].replace(":", SEP)
         var_slave = str(arg4).split("'")[3]
 
         # creating subclass of preposition
@@ -718,8 +719,8 @@ class applyAdv(Action):
     def execute(self, arg1, arg2, arg3):
 
         id_str = str(arg1).split("'")[3]
-        verb_str = str(arg2).split("'")[3].replace(":", ".")
-        adv_str = str(arg3).split("'")[3].replace(":", ".")
+        verb_str = str(arg2).split("'")[3].replace(":", SEP)
+        adv_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # creating subclass adjective
         adv = types.new_class(adv_str, (Adverb,))
@@ -740,8 +741,8 @@ class createAdj(Action):
     def execute(self, arg0, arg1, arg2):
 
         id_str = str(arg0).split("'")[3]
-        ent_str = str(arg1).split("'")[3].replace(":", ".")
-        adj_str = str(arg2).split("'")[3].replace(":", ".")
+        ent_str = str(arg1).split("'")[3].replace(":", SEP)
+        adj_str = str(arg2).split("'")[3].replace(":", SEP)
 
         # creating subclass adjective
         adv = types.new_class(adj_str, (Adjective,))
@@ -762,9 +763,9 @@ class createSubCustVerb(Action):
     def execute(self, arg1, arg2, arg3, arg4):
 
         id_str = str(arg1).split("'")[3]
-        verb_str = str(arg2).split("'")[3].replace(":", ".")
-        subj_str = str(arg3).split("'")[3].replace(":", ".")
-        obj_str = str(arg4).split("'")[3].replace(":", ".")
+        verb_str = str(arg2).split("'")[3].replace(":", SEP)
+        subj_str = str(arg3).split("'")[3].replace(":", SEP)
+        obj_str = str(arg4).split("'")[3].replace(":", SEP)
 
         # subclasses
         new_sub_verb = types.new_class(verb_str, (Verb,))
@@ -790,9 +791,9 @@ class createSubVerb(Action):
     def execute(self, arg1, arg2, arg3, arg4):
 
         id_str = str(arg1).split("'")[3]
-        verb_str = str(arg2).split("'")[3].replace(":", ".")
-        subj_str = str(arg3).split("'")[3].replace(":", ".")
-        obj_str = str(arg4).split("'")[3].replace(":", ".")
+        verb_str = str(arg2).split("'")[3].replace(":", SEP)
+        subj_str = str(arg3).split("'")[3].replace(":", SEP)
+        obj_str = str(arg4).split("'")[3].replace(":", SEP)
 
         # subclasses
         new_sub_verb = types.new_class(verb_str, (Verb,))
@@ -818,11 +819,11 @@ class createEmbVerbs(Action):
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
 
         id_str = str(arg1).split("'")[3]
-        main_verb_str = str(arg2).split("'")[3].replace(":", ".")
-        main_subj_str = str(arg3).split("'")[3].replace(":", ".")
-        emb_verb_str = str(arg4).split("'")[3].replace(":", ".")
-        emb_subj_str = str(arg5).split("'")[3].replace(":", ".")
-        emb_obj_str = str(arg6).split("'")[3].replace(":", ".")
+        main_verb_str = str(arg2).split("'")[3].replace(":", SEP)
+        main_subj_str = str(arg3).split("'")[3].replace(":", SEP)
+        emb_verb_str = str(arg4).split("'")[3].replace(":", SEP)
+        emb_subj_str = str(arg5).split("'")[3].replace(":", SEP)
+        emb_obj_str = str(arg6).split("'")[3].replace(":", SEP)
 
         # subclasses
         main_sub_verb = types.new_class(main_verb_str, (Verb,))
@@ -860,8 +861,8 @@ class createAssRule(Action):
     """Creating new assignment rule between entities"""
     def execute(self, arg1, arg2):
 
-        ent1 = str(arg1).split("'")[3].replace(":", ".")
-        ent2 = str(arg2).split("'")[3].replace(":", ".")
+        ent1 = str(arg1).split("'")[3].replace(":", SEP)
+        ent2 = str(arg2).split("'")[3].replace(":", SEP)
 
         types.new_class(ent1, (Entity,))
         types.new_class(ent2, (Entity,))
@@ -886,8 +887,8 @@ class createPassSubVerb(Action):
     def execute(self, arg1, arg2, arg3):
 
         id_str = str(arg1).split("'")[3]
-        verb_str = str(arg2).split("'")[3].replace(":", ".")
-        obj_str = str(arg3).split("'")[3].replace(":", ".")
+        verb_str = str(arg2).split("'")[3].replace(":", SEP)
+        obj_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # subclasses
         new_sub_verb = types.new_class(verb_str, (Verb,))
@@ -909,8 +910,8 @@ class createIntrSubVerb(Action):
     def execute(self, arg1, arg2, arg3):
 
         id_str = str(arg1).split("'")[3]
-        verb_str = str(arg2).split("'")[3].replace(":", ".")
-        subj_str = str(arg3).split("'")[3].replace(":", ".")
+        verb_str = str(arg2).split("'")[3].replace(":", SEP)
+        subj_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # subclasses
         new_sub_verb = types.new_class(verb_str, (Verb,))
@@ -932,9 +933,9 @@ class createSubPrep(Action):
     def execute(self, arg0, arg1, arg2, arg3):
 
         id_str = str(arg0).split("'")[3]
-        verb = str(arg1).split("'")[3].replace(":", ".")
-        prep = str(arg2).split("'")[3].replace(":", ".")
-        ent = str(arg3).split("'")[3].replace(":", ".")
+        verb = str(arg1).split("'")[3].replace(":", SEP)
+        prep = str(arg2).split("'")[3].replace(":", SEP)
+        ent = str(arg3).split("'")[3].replace(":", SEP)
 
         v = parser.clean_from_POS(verb) + "." + id_str
 
@@ -971,9 +972,9 @@ class createSubGndPrep(Action):
     def execute(self, arg0, arg1, arg2, arg3):
 
         id_str = str(arg0).split("'")[3]
-        ent_master = str(arg1).split("'")[3].replace(":", ".")
+        ent_master = str(arg1).split("'")[3].replace(":", SEP)
         prep = str(arg2).split("'")[3].replace(":", ".")
-        ent_slave = str(arg3).split("'")[3].replace(":", ".")
+        ent_slave = str(arg3).split("'")[3].replace(":", SEP)
 
         # Creating subclasses of Entity and individuals
         new_sub_ent_master = types.new_class(ent_master, (Entity,))
