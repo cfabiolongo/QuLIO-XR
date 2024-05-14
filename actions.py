@@ -1407,7 +1407,7 @@ class submit_explo_sparql(Action):
             object = str(item).split(",")[2]
             object_filtered = object.split("#")[1][:-3]
 
-            triple = f"({verb_filtered}, {subject_filtered}, {object_filtered})"
+            triple = f"{verb_filtered}({subject_filtered}, {object_filtered})"
             print(triple)
 
 
@@ -1420,15 +1420,16 @@ class feed_all_sparql(Action):
         print(arg1)
 
         subject = str(arg1).split("'")[3]
+        print(subject)
 
-        # +Q("Colonel_West")
+        # +Q("Colonel_NNP_West_NNP")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?i ?s ?o"+" WHERE { "
-        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb.  ?i lodo:hasSubject ?s.  ?i lodo:hasObject ?o.  "+"}"
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
         # q = q + f"?i rdfs:subClassOf lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. "+"}"
 
         self.assert_belief(EXPLO_SPARQL(q))
