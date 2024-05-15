@@ -1350,6 +1350,36 @@ class create_IMP_MST_ACT(Action):
 # ----------------------------------
 
 
+class seek_adj(Action):
+    """Seek related verb adverbs"""
+    def execute(self, arg1):
+
+        subject = str(arg1).split("'")[3]
+        print(subject)
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
+        q = p + f" SELECT ?adj"+" WHERE { "
+        q = q + f"lodo:{subject} lodo:hasAdj ?adj. "+"}"
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        sync_reasoner_hermit(my_world, infer_property_values=True)
+        # sync_reasoner_hermit(my_world)
+
+        graph = my_world.as_rdflib_graph()
+        result = list(graph.query(q))
+
+        for res in result:
+            adv = str(res).split("#")[1][:-4]
+            id = adv.split(".")[1]
+            self.assert_belief(LF_ADJ(id, adv))
+
+
 class seek_adv(Action):
     """Seek related verb adverbs"""
     def execute(self, arg1):

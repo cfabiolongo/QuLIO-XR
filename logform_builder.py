@@ -12,6 +12,7 @@ from actions import *
 
 # eek_prep(V), seek_adj(S), seek_prep(S), seek_adj(O), seek_prep(O)
 
-process_logform() / LF(I, V, S, O) >> [show_line(f"\nProcessing ",I,"..."), -LF(I, V, S, O), seek_adv(V), process_logform()]
+process_logform() / LF(I, V, S, O) >> [show_line(f"\nProcessing ",I,"..."), -LF(I, V, S, O), seek_adv(V), seek_adj(S), seek_adj(O), process_logform()]
 
-# process_logform() / LF_ADV(I, V, S, O) >> [show_line(f"\nProcessing adv ",X,"...")]
+process_logform() / LF_ADV(I, A) >> [show_line(f"\nProcessing adverb ",A,"..."), -LF_ADV(I, A), process_logform()]
+process_logform() / LF_ADJ(I, A) >> [show_line(f"\nProcessing adjective ",A,"..."), -LF_ADJ(I, A), process_logform()]
