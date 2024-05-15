@@ -184,7 +184,8 @@ class PROCESS_STORED_MST(Reactor): pass
 class NER(Belief): pass
 class feed_sparql(Procedure): pass
 class finalize_sparql(Procedure): pass
-class process_logform(Procedure): pass
+class proc_logform(Procedure): pass
+class build_logform(Procedure): pass
 
 # Nominal query sparql belief
 class SPARQL(Reactor): pass
@@ -196,6 +197,8 @@ class PRE_SPARQL(Belief): pass
 class EXPLO_SPARQL(Reactor): pass
 # Belief from KG to build Logical forms (LF)
 class LF(Belief): pass
+class LF_ORIGIN(Belief): pass
+class PRE_LF(Belief): pass
 class LF_ADV(Belief): pass
 class LF_ADJ(Belief): pass
 class LF_PREP(Belief): pass
@@ -1350,6 +1353,45 @@ class create_IMP_MST_ACT(Action):
 # ----------------------------------
 
 
+class seek_prep(Action):
+    """Seek related entity (verb/subject/object) preposition"""
+    def execute(self, arg1):
+
+        subject = str(arg1).split("'")[3]
+        print(subject)
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
+        q = p + f" SELECT ?prep ?obj"+" WHERE { "
+        q = q + f"lodo:{subject} lodo:hasPrep ?prep. ?prep lodo:hasObject ?obj. "+"}"
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        sync_reasoner_hermit(my_world, infer_property_values=True)
+        # sync_reasoner_hermit(my_world)
+
+        graph = my_world.as_rdflib_graph()
+        result = list(graph.query(q))
+
+        print(result)
+        id = subject.split(".")[1]
+
+        for res in result:
+            print(res)
+            pre_prep = str(res).split(",")[0]
+            pre_obj = str(res).split(",")[1]
+
+            prep = pre_prep.split("#")[1][:-2]
+            obj = pre_obj.split("#")[1][:-3]
+
+            self.assert_belief(LF_PREP(id, subject, prep, obj))
+
+
+
 class seek_adj(Action):
     """Seek related verb adverbs"""
     def execute(self, arg1):
@@ -1377,7 +1419,7 @@ class seek_adj(Action):
         for res in result:
             adv = str(res).split("#")[1][:-4]
             id = adv.split(".")[1]
-            self.assert_belief(LF_ADJ(id, adv))
+            self.assert_belief(LF_ADJ(id, subject, adv))
 
 
 class seek_adv(Action):
@@ -1845,3 +1887,54 @@ class join_cmps(Action):
 
         new_var = val2.split(":")[0][:-2]+"_"+val1
         self.assert_belief(MST_VAR(var, new_var))
+
+
+
+# --------------------------------------
+# --------- LODO-to-LF Section ---------
+# --------------------------------------
+
+
+class build_pre(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4):
+
+        id = str(arg1).split("'")[3]
+        verb = str(arg2).split("'")[3].split(".")[0]
+        sub = str(arg3).split("'")[3].split(".")[0]
+        obj = str(arg4).split("'")[3].split(".")[0]
+
+        self.assert_belief(PRE_LF(id, verb, sub, obj))
+
+
+
+class join_adj_subj(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
+
+        id = str(arg1).split("'")[3]
+        verb = str(arg2).split("'")[3].split(".")[0]
+        sub = str(arg3).split("'")[3].split(".")[0]
+        obj = str(arg4).split("'")[3].split(".")[0]
+        adj = str(arg5).split("'")[3].split(".")[0]
+
+        sub = adj+"("+sub+")"
+
+        self.assert_belief(PRE_LF(id, verb, sub, obj))
+
+
+
+
+class join_adj_obj(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5):
+
+        id = str(arg1).split("'")[3]
+        verb = str(arg2).split("'")[3]
+        sub = str(arg3).split("'")[3]
+        obj = str(arg4).split("'")[3]
+        adj = str(arg5).split("'")[3]
+
+        obj = adj + "(" + obj + ")"
+
+        self.assert_belief(PRE_LF(id, verb, sub, obj))
