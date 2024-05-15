@@ -9,6 +9,7 @@ from actions import *
 from onto_builder import *
 from mst_builder import *
 from query_builder import *
+from logform_builder import *
 from front_end import *
 
 
