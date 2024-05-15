@@ -196,6 +196,9 @@ class PRE_SPARQL(Belief): pass
 class EXPLO_SPARQL(Reactor): pass
 # Belief from KG to build Logical forms (LF)
 class LF(Belief): pass
+class LF_ADV(Belief): pass
+class LF_ADJ(Belief): pass
+class LF_PREP(Belief): pass
 
 class ALL(Belief): pass
 
@@ -1347,6 +1350,36 @@ class create_IMP_MST_ACT(Action):
 # ----------------------------------
 
 
+class seek_adv(Action):
+    """Seek related verb adverbs"""
+    def execute(self, arg1):
+
+        subject = str(arg1).split("'")[3]
+        print(subject)
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
+        q = p + f" SELECT ?adv"+" WHERE { "
+        q = q + f"lodo:{subject} lodo:hasAdv ?adv. "+"}"
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        sync_reasoner_hermit(my_world, infer_property_values=True)
+        # sync_reasoner_hermit(my_world)
+
+        graph = my_world.as_rdflib_graph()
+        result = list(graph.query(q))
+
+        for res in result:
+            adv = str(res).split("#")[1][:-4]
+            id = adv.split(".")[1]
+            self.assert_belief(LF_ADV(id, adv))
+
+
 class submit_sparql(Action):
     """Submit a Query Sparql to Reasoner"""
     def execute(self, arg1):
@@ -1404,6 +1437,8 @@ class submit_explo_sparql(Action):
             verb = str(item).split(",")[0]
             verb_filtered = verb.split("#")[1][:-2]
 
+            id = verb_filtered.split(".")[1]
+
             subject = str(item).split(",")[1]
             subject_filtered = subject.split("#")[1][:-2]
 
@@ -1412,7 +1447,7 @@ class submit_explo_sparql(Action):
 
             triple = f"{verb_filtered}, {subject_filtered}, {object_filtered}"
 
-            self.assert_belief(LF(verb_filtered, subject_filtered, object_filtered))
+            self.assert_belief(LF(id, verb_filtered, subject_filtered, object_filtered))
 
             print(triple)
 
@@ -1436,7 +1471,6 @@ class feed_all_sparql(Action):
 
         q = p + f" SELECT ?i ?s ?o"+" WHERE { "
         q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
-        # q = q + f"?i rdfs:subClassOf lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. "+"}"
 
         self.assert_belief(EXPLO_SPARQL(q))
 
