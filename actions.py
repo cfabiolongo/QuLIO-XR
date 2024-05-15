@@ -184,6 +184,7 @@ class PROCESS_STORED_MST(Reactor): pass
 class NER(Belief): pass
 class feed_sparql(Procedure): pass
 class finalize_sparql(Procedure): pass
+class process_logform(Procedure): pass
 
 # Nominal query sparql belief
 class SPARQL(Reactor): pass
@@ -193,6 +194,8 @@ class PRE_SPARQL(Belief): pass
 
 # Explorative query sparql belief
 class EXPLO_SPARQL(Reactor): pass
+# Belief from KG to build Logical forms (LF)
+class LF(Belief): pass
 
 class ALL(Belief): pass
 
@@ -1407,7 +1410,10 @@ class submit_explo_sparql(Action):
             object = str(item).split(",")[2]
             object_filtered = object.split("#")[1][:-3]
 
-            triple = f"{verb_filtered}({subject_filtered}, {object_filtered})"
+            triple = f"{verb_filtered}, {subject_filtered}, {object_filtered}"
+
+            self.assert_belief(LF(verb_filtered, subject_filtered, object_filtered))
+
             print(triple)
 
 
