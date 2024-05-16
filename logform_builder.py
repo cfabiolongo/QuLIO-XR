@@ -7,6 +7,7 @@ from actions import *
 # +Q("Colonel_NNP_West_NNP"), +Q("Cat_NN"), +FEED("the cat ate the food voraciously")
 
 proc_logform(X) >> [show_line("\nLaunching explorative query SPARQL: \n", X), log("SPARQL: ", X), submit_explo_sparql(X), proc_logform()]
+# proc_logform(X) >> [show_line("\nLaunching explorative intr. verbs SPARQL: \n", X), log("SPARQL: ", X), submit_intr_explo_sparql(X), proc_logform()]
 
 # Initialiting explorative queries
 

@@ -1569,9 +1569,57 @@ class submit_sparql(Action):
             print(unique_names)
 
 
+class submit_intr_explo_sparql(Action):
+    """Look for LODO intranstive verbal actions"""
+    def execute(self, arg1):
+
+        subject = str(arg1).split("'")[3]
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        sync_reasoner_hermit(my_world, infer_property_values=True)
+        # sync_reasoner_hermit(my_world)
+
+        graph = my_world.as_rdflib_graph()
+
+        # +Q("Colonel_NNP_West_NNP")
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
+        q = p + f" SELECT ?i ?s ?o"+" WHERE { "
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
+
+        result = list(graph.query(q))
+
+        # print("\nResult: ", result)
+
+        for item in result:
+            verb = str(item).split(",")[0]
+            verb_filtered = verb.split("#")[1][:-2]
+
+            id = verb_filtered.split(".")[1]
+
+            subject = str(item).split(",")[1]
+            subject_filtered = subject.split("#")[1][:-2]
+
+            object = str(item).split(",")[2]
+            object_filtered = object.split("#")[1][:-3]
+
+            triple = f"{verb_filtered}, {subject_filtered}, {object_filtered}"
+
+            self.assert_belief(VF(id, verb_filtered, subject_filtered, object_filtered))
+
+            print(triple)
+
+
+
 
 class submit_explo_sparql(Action):
-    """Submit a Query Sparql to Reasoner"""
+    """Look for LODO transtive verbal actions"""
     def execute(self, arg1):
 
         subject = str(arg1).split("'")[3]

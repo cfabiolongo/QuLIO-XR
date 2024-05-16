@@ -7,7 +7,7 @@ class SPARQL(Reactor): pass
 # ------- PRE-PROCESSING RULES -------
 
 # Initialiting explorative queries
-feed_sparql() / ALL(X) >> [show_line(f"\nExtracting all having {X} as subject/object..."), -ALL(X), proc_logform(X)]
+feed_sparql() / ALL(X) >> [show_line(f"\nExtracting all having ",X," as subject/object..."), -ALL(X), proc_logform(X)]
 
 # Modelling MST_BINDS shape -----
 feed_sparql() / (MST_VAR(X, Y) & MST_BIND(Y, Z)) >> [show_line("\nModelling MTS_BINDS shape..."), -MST_BIND(Y, Z), +MST_BIND(X, Z), feed_sparql()]
