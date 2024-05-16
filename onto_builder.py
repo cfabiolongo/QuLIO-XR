@@ -24,8 +24,14 @@ create_adv() / (ACTION("ROOT", "FLAT", V, D, X, Y) & ADV("FLAT", D, K) & ID(I)) 
 create_adv() >> [show_line("\nadverbs creation done.")]
 
 # Verb-related prepositions
+create_prep() / (ACTION("FLAT", V, D, "__", Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating pass. verb related prep: ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubPassPrep(I, V, K, S), create_prep()]
+create_prep() / (ACTION("FLAT", V, D, X, "__") & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating intr. verb related prep: ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubIntrPrep(I, V, K, S), create_prep()]
 create_prep() / (ACTION("FLAT", V, D, X, Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating verb related prep: ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubPrep(I, V, K, S), create_prep()]
-create_prep() / (ACTION("ROOT", "FLAT", V, D, X, Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating verb related  (ROOT): ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubPrep(I, V, K, S), create_prep()]
+
+create_prep() / (ACTION("ROOT", "FLAT", V, D, "__", Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating pass. verb related (ROOT): ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubPassPrep(I, V, K, S), create_prep()]
+create_prep() / (ACTION("ROOT", "FLAT", V, D, X, "__") & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating intr. verb related (ROOT): ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubIntrPrep(I, V, K, S), create_prep()]
+create_prep() / (ACTION("ROOT", "FLAT", V, D, X, Y) & PREP("FLAT", D, K, Z) & GND("FLAT", Z, S) & ID(I)) >> [show_line("\ncreating verb related prep (ROOT): ", K), -PREP("FLAT", D, K, Z), -GND("FLAT", Z, S), createSubPrep(I, V, K, S), create_prep()]
+
 create_prep() >> [show_line("\nverb related preps creation done.")]
 
 # Ground-related Prepositions

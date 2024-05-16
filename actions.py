@@ -54,7 +54,7 @@ with my_onto:
     class Verb(Thing):
         pass
 
-    class Normal(Verb):
+    class Transitive(Verb):
         pass
 
     class Intransitive(Verb):
@@ -931,13 +931,13 @@ class createIntrSubVerb(Action):
         subj_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # subclasses
-        new_sub_verb = types.new_class(verb_str, (Verb, ))
+        new_sub_verb = types.new_class(verb_str, (Intransitive, ))
         new_sub_subj = types.new_class(subj_str, (Entity,))
 
         # entities individual
         new_ind_id = Id(id_str)
         new_ind_verb = new_sub_verb(parser.clean_from_POS(verb_str)+"."+id_str)
-        new_ind_verb.is_a.append(Intransitive)
+        # new_ind_verb.is_a.append(Intransitive)
 
         new_ind_subj = new_sub_subj(parser.clean_from_POS(subj_str)+"."+id_str)
 
@@ -965,7 +965,7 @@ class createSubPrep(Action):
         else:
             print("Creating objects....")
             # Creating subclass of Verb and individual
-            new_sub_verb = types.new_class(verb, (Verb,))
+            new_sub_verb = types.new_class(verb, (Transitive,))
             new_ind_verb = new_sub_verb(v)
             # Updating owl object dict
             owl_obj_dict[verb] = new_sub_verb
@@ -983,6 +983,79 @@ class createSubPrep(Action):
         new_ind_verb.hasPrep.append(new_ind_prep)
         new_ind_prep.hasObject.append(new_ind_ent)
 
+
+class createSubPassPrep(Action):
+    """Creating a subclass of depending passive action preposition"""
+    def execute(self, arg0, arg1, arg2, arg3):
+
+        id_str = str(arg0).split("'")[3]
+        verb = str(arg1).split("'")[3].replace(":", SEP)
+        prep = str(arg2).split("'")[3].replace(":", SEP)
+        ent = str(arg3).split("'")[3].replace(":", SEP)
+
+        v = parser.clean_from_POS(verb) + "." + id_str
+
+        if v in owl_obj_dict:
+            print("Getting objects from dict....", owl_obj_dict[v])
+            # Getting object from dict
+            new_ind_verb = owl_obj_dict[v]
+        else:
+            print("Creating objects....")
+            # Creating subclass of Verb and individual
+            new_sub_verb = types.new_class(verb, (Intransitive,))
+            new_ind_verb = new_sub_verb(v)
+            # Updating owl object dict
+            owl_obj_dict[verb] = new_sub_verb
+            owl_obj_dict[v] = new_ind_verb
+
+        # Creating subclass of Preposition and individual
+        new_sub_prep = types.new_class(prep, (Preposition,))
+        new_ind_prep = new_sub_prep(parser.clean_from_POS(prep) + "." + id_str)
+
+        # Creating subclass of Entity and individual
+        new_sub_ent = types.new_class(ent, (Entity,))
+        new_ind_ent = new_sub_ent(parser.clean_from_POS(ent) + "." + id_str)
+
+        # Creating objects properties
+        new_ind_verb.hasPrep.append(new_ind_prep)
+        new_ind_prep.hasObject.append(new_ind_ent)
+
+
+class createSubIntrPrep(Action):
+    """Creating a subclass of depending intransitive action preposition"""
+    def execute(self, arg0, arg1, arg2, arg3):
+
+        id_str = str(arg0).split("'")[3]
+        verb = str(arg1).split("'")[3].replace(":", SEP)
+        prep = str(arg2).split("'")[3].replace(":", SEP)
+        ent = str(arg3).split("'")[3].replace(":", SEP)
+
+        v = parser.clean_from_POS(verb) + "." + id_str
+
+        if v in owl_obj_dict:
+            print("Getting objects from dict....", owl_obj_dict[v])
+            # Getting object from dict
+            new_ind_verb = owl_obj_dict[v]
+        else:
+            print("Creating objects....")
+            # Creating subclass of Verb and individual
+            new_sub_verb = types.new_class(verb, (Intransitive,))
+            new_ind_verb = new_sub_verb(v)
+            # Updating owl object dict
+            owl_obj_dict[verb] = new_sub_verb
+            owl_obj_dict[v] = new_ind_verb
+
+        # Creating subclass of Preposition and individual
+        new_sub_prep = types.new_class(prep, (Preposition,))
+        new_ind_prep = new_sub_prep(parser.clean_from_POS(prep) + "." + id_str)
+
+        # Creating subclass of Entity and individual
+        new_sub_ent = types.new_class(ent, (Entity,))
+        new_ind_ent = new_sub_ent(parser.clean_from_POS(ent) + "." + id_str)
+
+        # Creating objects properties
+        new_ind_verb.hasPrep.append(new_ind_prep)
+        new_ind_prep.hasObject.append(new_ind_ent)
 
 
 
