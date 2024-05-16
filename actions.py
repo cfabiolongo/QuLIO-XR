@@ -54,6 +54,13 @@ with my_onto:
     class Verb(Thing):
         pass
 
+    class Normal(Verb):
+        pass
+
+    class Intransitive(Verb):
+        pass
+
+
     class Adjective(Thing):
         pass
 
@@ -924,12 +931,14 @@ class createIntrSubVerb(Action):
         subj_str = str(arg3).split("'")[3].replace(":", SEP)
 
         # subclasses
-        new_sub_verb = types.new_class(verb_str, (Verb,))
+        new_sub_verb = types.new_class(verb_str, (Verb, ))
         new_sub_subj = types.new_class(subj_str, (Entity,))
 
         # entities individual
         new_ind_id = Id(id_str)
         new_ind_verb = new_sub_verb(parser.clean_from_POS(verb_str)+"."+id_str)
+        new_ind_verb.is_a.append(Intransitive)
+
         new_ind_subj = new_sub_subj(parser.clean_from_POS(subj_str)+"."+id_str)
 
         # individual entity - hasSubject - subject individual
