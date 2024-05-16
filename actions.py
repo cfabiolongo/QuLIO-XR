@@ -1615,7 +1615,7 @@ class submit_intr_explo_sparql(Action):
 
 
 class submit_explo_membership(Action):
-    """Look for LODO transtive verbal actions"""
+    """Probe all membership of an individual"""
     def execute(self, arg1):
 
         subject = str(arg1).split("'")[3]
@@ -1635,14 +1635,23 @@ class submit_explo_membership(Action):
         p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
-        q = p + f" SELECT ?i"+" WHERE { "
-        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:{subject}. "+"}"
+        q = p + f" SELECT ?t"+" WHERE { "
+        q = q + f"?i rdf:type lodo:{subject}. ?i rdf:type ?t. "+"}"
 
         result = list(graph.query(q))
 
-        print("\nResult: ", result)
+        # print("\nResult: ", result)
 
-        # for item in result:
+        cls_list = []
+
+        for item in result:
+            cls = str(item).split("#")[1][:-4]
+            if cls != 'NamedIndividual':
+                cls_list.append(cls)
+
+        cls_list_unique = list(set(cls_list))
+        print(cls_list_unique)
+
         #     verb = str(item).split(",")[0]
         #     verb_filtered = verb.split("#")[1][:-2]
         #
