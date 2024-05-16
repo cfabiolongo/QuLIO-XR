@@ -1948,6 +1948,39 @@ class join_prep_verb(Action):
         self.assert_belief(PRE_LF(id, verb, sub, obj))
 
 
+
+class join_prep_subj(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
+
+        id = str(arg1).split("'")[3]
+        verb = str(arg2).split("'")[3]
+        sub = str(arg3).split("'")[3]
+        obj = str(arg4).split("'")[3]
+        prep = str(arg5).split("'")[3].split(".")[0]
+        prep_obj = str(arg6).split("'")[3].split(".")[0]
+
+        sub = prep+"("+sub+", "+prep_obj+")"
+
+        self.assert_belief(PRE_LF(id, verb, sub, obj))
+
+
+class join_prep_obj(Action):
+    """Feed Query Sparql parser"""
+
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
+        id = str(arg1).split("'")[3]
+        verb = str(arg2).split("'")[3]
+        sub = str(arg3).split("'")[3]
+        obj = str(arg4).split("'")[3]
+        prep = str(arg5).split("'")[3].split(".")[0]
+        prep_obj = str(arg6).split("'")[3].split(".")[0]
+
+        obj = prep + "(" + obj + ", " + prep_obj + ")"
+
+        self.assert_belief(PRE_LF(id, verb, sub, obj))
+
+
 class build_pre_lf(Action):
     """Feed Query Sparql parser"""
     def execute(self, arg1, arg2, arg3):
