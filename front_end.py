@@ -8,10 +8,10 @@ class Q(Reactor): pass
 
 
 # sentences for reasoning purposes
-c1() >> [+FEED("Colonel West is an American")]
+c1() >> [+FEED("Colonel West is American")]
 c2() >> [+FEED("Nono is a hostile nation")]
-c3() >> [+FEED("missiles are weapons")]
-c4() >> [+FEED("the Colonel West sells missiles to Nono")]
+c3() >> [+FEED("Missiles are weapons")]
+c4() >> [+FEED("Colonel West sells missiles to Nono")]
 c5() >> [+FEED("When an American sells weapons to a hostile nation, that American is a criminal")]
 
 # testing rules

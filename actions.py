@@ -529,7 +529,7 @@ class fillActRule(Action):
         obj = str(arg5).split("'")[3]
 
         # creating subclass of Verb
-        types.new_class(verb, (Verb,))
+        types.new_class(verb, (Transitive,))
 
         if rule[0] == "-":
             rule = "hasSubject(?"+dav+", ?"+subj+"), hasObject(?"+dav+", ?"+obj+"), "+verb+"(?"+dav+") "+rule
@@ -550,7 +550,7 @@ class fillPassActRule(Action):
         obj = str(arg4).split("'")[3].replace(":", SEP)
 
         # creating subclass of Verb
-        types.new_class(verb, (Verb,))
+        types.new_class(verb, (Intransitive,))
 
         if rule[0] == "-":
             rule = "hasObject(?"+dav+", ?"+obj+"), "+verb+"(?"+dav+") "+rule
@@ -571,7 +571,7 @@ class fillIntraActRule(Action):
         subj = str(arg4).split("'")[3].replace(":", SEP)
 
         # creating subclass of Verb
-        types.new_class(verb, (Verb,))
+        types.new_class(verb, (Intransitive,))
 
         if rule[0] == "-":
             rule = "hasSubject(?"+dav+", ?"+subj+"), "+verb+"(?"+dav+") "+rule
@@ -785,7 +785,7 @@ class createSubCustVerb(Action):
         obj_str = str(arg4).split("'")[3].replace(":", SEP)
 
         # subclasses
-        new_sub_verb = types.new_class(verb_str, (Verb,))
+        new_sub_verb = types.new_class(verb_str, (Transitive,))
         new_sub_subj = types.new_class(subj_str, (Entity,))
         new_sub_obj = types.new_class(obj_str, (Entity,))
 
@@ -813,7 +813,7 @@ class createSubVerb(Action):
         obj_str = str(arg4).split("'")[3].replace(":", SEP)
 
         # subclasses
-        new_sub_verb = types.new_class(verb_str, (Verb,))
+        new_sub_verb = types.new_class(verb_str, (Transitive,))
         new_sub_subj = types.new_class(subj_str, (Entity,))
         new_sub_obj = types.new_class(obj_str, (Entity,))
 
@@ -843,9 +843,9 @@ class createEmbVerbs(Action):
         emb_obj_str = str(arg6).split("'")[3].replace(":", SEP)
 
         # subclasses
-        main_sub_verb = types.new_class(main_verb_str, (Verb,))
+        main_sub_verb = types.new_class(main_verb_str, (Transitive,))
         main_sub_subj = types.new_class(main_subj_str, (Entity,))
-        emb_sub_verb = types.new_class(emb_verb_str, (Verb,))
+        emb_sub_verb = types.new_class(emb_verb_str, (Transitive,))
         emb_sub_subj = types.new_class(emb_subj_str, (Entity,))
         emb_sub_obj = types.new_class(emb_obj_str, (Entity,))
 
@@ -1590,8 +1590,8 @@ class submit_intr_explo_sparql(Action):
         p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
-        q = p + f" SELECT ?i ?s ?o"+" WHERE { "
-        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
+        q = p + f" SELECT ?i ?s"+" WHERE { "
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}."+"}"
 
         result = list(graph.query(q))
 
@@ -1606,15 +1606,59 @@ class submit_intr_explo_sparql(Action):
             subject = str(item).split(",")[1]
             subject_filtered = subject.split("#")[1][:-2]
 
-            object = str(item).split(",")[2]
-            object_filtered = object.split("#")[1][:-3]
+            couple = f"{verb_filtered}, {subject_filtered}"
+            print(couple)
 
-            triple = f"{verb_filtered}, {subject_filtered}, {object_filtered}"
+            self.assert_belief(VF(id, verb_filtered, subject_filtered, "__"))
 
-            self.assert_belief(VF(id, verb_filtered, subject_filtered, object_filtered))
 
-            print(triple)
 
+
+class submit_explo_membership(Action):
+    """Look for LODO transtive verbal actions"""
+    def execute(self, arg1):
+
+        subject = str(arg1).split("'")[3]
+
+        my_world = owlready2.World()
+        my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
+
+        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+        sync_reasoner_hermit(my_world, infer_property_values=True)
+        # sync_reasoner_hermit(my_world)
+
+        graph = my_world.as_rdflib_graph()
+
+        # +Q("Colonel_NNP_West_NNP")
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
+        q = p + f" SELECT ?i"+" WHERE { "
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:{subject}. "+"}"
+
+        result = list(graph.query(q))
+
+        print("\nResult: ", result)
+
+        # for item in result:
+        #     verb = str(item).split(",")[0]
+        #     verb_filtered = verb.split("#")[1][:-2]
+        #
+        #     id = verb_filtered.split(".")[1]
+        #
+        #     subject = str(item).split(",")[1]
+        #     subject_filtered = subject.split("#")[1][:-2]
+        #
+        #     object = str(item).split(",")[2]
+        #     object_filtered = object.split("#")[1][:-3]
+        #
+        #     triple = f"{verb_filtered}, {subject_filtered}, {object_filtered}"
+        #
+        #     self.assert_belief(VF(id, verb_filtered, subject_filtered, object_filtered))
+        #
+        #     print(triple)
 
 
 
