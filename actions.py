@@ -196,6 +196,7 @@ class PRE_SPARQL(Belief): pass
 # Explorative query sparql belief
 class EXPLO_SPARQL(Reactor): pass
 # Belief from KG to build Logical forms (LF)
+class VF(Belief): pass
 class LF(Belief): pass
 class LF_ORIGIN(Belief): pass
 class PRE_LF(Belief): pass
@@ -1491,7 +1492,7 @@ class submit_explo_sparql(Action):
     """Submit a Query Sparql to Reasoner"""
     def execute(self, arg1):
 
-        query = str(arg1).split("'")[3]
+        subject = str(arg1).split("'")[3]
 
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
@@ -1501,7 +1502,17 @@ class submit_explo_sparql(Action):
         # sync_reasoner_hermit(my_world)
 
         graph = my_world.as_rdflib_graph()
-        result = list(graph.query(query))
+
+        # +Q("Colonel_NNP_West_NNP")
+
+        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
+        q = p + f" SELECT ?i ?s ?o"+" WHERE { "
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
+
+        result = list(graph.query(q))
 
         # print("\nResult: ", result)
 
@@ -1519,32 +1530,12 @@ class submit_explo_sparql(Action):
 
             triple = f"{verb_filtered}, {subject_filtered}, {object_filtered}"
 
-            self.assert_belief(LF(id, verb_filtered, subject_filtered, object_filtered))
+            self.assert_belief(VF(id, verb_filtered, subject_filtered, object_filtered))
 
             print(triple)
 
 
 
-
-class feed_all_sparql(Action):
-    """Feed Query Sparql parser"""
-    def execute(self, arg1):
-
-        print(arg1)
-
-        subject = str(arg1).split("'")[3]
-        print(subject)
-
-        # +Q("Colonel_NNP_West_NNP")
-
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?i ?s ?o"+" WHERE { "
-        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
-
-        self.assert_belief(EXPLO_SPARQL(q))
 
 
 
@@ -1900,9 +1891,9 @@ class build_pre(Action):
     def execute(self, arg1, arg2, arg3, arg4):
 
         id = str(arg1).split("'")[3]
-        verb = str(arg2).split("'")[3].split(".")[0]
+        verb = str(arg2).split("'")[3].split(".")[0]+"("
         sub = str(arg3).split("'")[3].split(".")[0]
-        obj = str(arg4).split("'")[3].split(".")[0]
+        obj = str(arg4).split("'")[3].split(".")[0]+")"
 
         self.assert_belief(PRE_LF(id, verb, sub, obj))
 
@@ -1926,15 +1917,45 @@ class join_adj_subj(Action):
 
 
 class join_adj_obj(Action):
-    """Feed Query Sparql parser"""
+    """Add adj to obj"""
     def execute(self, arg1, arg2, arg3, arg4, arg5):
 
         id = str(arg1).split("'")[3]
         verb = str(arg2).split("'")[3]
         sub = str(arg3).split("'")[3]
         obj = str(arg4).split("'")[3]
-        adj = str(arg5).split("'")[3]
+        adj = str(arg5).split("'")[3].split(".")[0]
 
         obj = adj + "(" + obj + ")"
 
         self.assert_belief(PRE_LF(id, verb, sub, obj))
+
+
+class join_prep_verb(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
+
+        id = str(arg1).split("'")[3]
+        verb = str(arg2).split("'")[3]
+        sub = str(arg3).split("'")[3]
+        obj = str(arg4).split("'")[3]
+        prep = str(arg5).split("'")[3].split(".")[0]
+        prep_obj = str(arg6).split("'")[3].split(".")[0]
+
+        verb = prep + "(" + verb
+        obj = obj+", "+prep_obj+")"
+
+        self.assert_belief(PRE_LF(id, verb, sub, obj))
+
+
+class build_pre_lf(Action):
+    """Feed Query Sparql parser"""
+    def execute(self, arg1, arg2, arg3):
+
+        verb = str(arg1).split("'")[3]
+        sub = str(arg2).split("'")[3]
+        obj = str(arg3).split("'")[3]
+
+        logical_form = verb+sub+", "+obj
+
+        self.assert_belief(LF(logical_form))
