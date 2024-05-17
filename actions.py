@@ -2180,3 +2180,17 @@ class build_pre_lf(Action):
         logical_form = verb+sub+", "+obj
 
         self.assert_belief(LF(logical_form))
+
+
+
+
+# -------------------------------
+# --------- LLM Section ---------
+# -------------------------------
+
+class llm_get(Action):
+    """get LLM result"""
+    def execute(self, *args):
+        a = str(args).split("'")[5]
+        result = parser.get_LLM(a)
+        print(result)
