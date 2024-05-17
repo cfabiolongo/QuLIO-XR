@@ -6,6 +6,11 @@ from nltk.corpus import wordnet
 import configparser
 import time
 
+# LLama
+import torch
+from peft import PeftModel
+from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer
+
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -21,8 +26,23 @@ GMC_ACTIVE = config.getboolean('GROUNDED_MEANING_CONTEXT', 'GMC_ACTIVE')
 GMC_POS = config.get('GROUNDED_MEANING_CONTEXT', 'GMC_POS').split(", ")
 
 OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
-
 LEMMATIZATION = config.getboolean('PARSING', 'LEMMATIZATION')
+
+
+TEMP_FOL = float(config.get('LLM', 'TEMP_FOL'))
+TEMP_QA = float(config.get('LLM', 'TEMP_QA'))
+max_new_tokens = int(config.get('LLM', 'MAX_NEW_TOKENS'))
+COMB_TYPE = config.get('LLM', 'COMB_TYPE')
+WEIGHTS = config.get('LLM', 'WEIGHTS').split(", ")
+
+base_model = config.get('LLM', 'BASE_MODEL')
+adapter_name1 = config.get('LLM', 'ADAPTER_NAME1')
+adapter_name2 = config.get('LLM', 'ADAPTER_NAME2')
+adapter_path1 = config.get('LLM', 'ADAPTER_PATH1')
+adapter_path2 = config.get('LLM', 'ADAPTER_PATH2')
+
+
+
 
 
 
@@ -36,6 +56,36 @@ class Parse(object):
 
         # python -m spacy download en_core_web_lg
         self.nlp = spacy.load('en_core_web_trf')  # 789 MB
+
+
+        ##### Begin LLM Loading model section ###################
+
+        w1 = float(WEIGHTS[0])  # fol
+        w2 = float(WEIGHTS[1])  # dolly
+
+        print(f"combination type: {COMB_TYPE}")
+        print(f"weights: {w1}, {w2}")
+
+        print(f"Starting to load the base model {base_model} and the combined adapters {adapter_name1}, {adapter_name2} into memory...")
+
+        compute_dtype = getattr(torch, "float16")
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=compute_dtype,
+            bnb_4bit_use_double_quant=True,
+        )
+        self.model = AutoModelForCausalLM.from_pretrained(base_model, device_map={"": 0},
+                                                          quantization_config=bnb_config)
+        self.tokenizer = AutoTokenizer.from_pretrained(base_model, use_fast=True)
+
+        self.model = PeftModel.from_pretrained(self.model, adapter_path1, adapter_name="fol")
+        self.model.load_adapter(adapter_path2, adapter_name="dolly")
+
+        self.model.add_weighted_adapter(["fol", "dolly"], [w1, w2], combination_type=COMB_TYPE, adapter_name="dolly_fol")
+
+        ##### End LLM Loading model section ###################
+
 
         if platform.system() == "Windows":
             os.system('cls')
@@ -77,6 +127,69 @@ class Parse(object):
 
         # Beginning Computational time
         self.start_time = 0
+
+
+    def get_LLM(self, sub_prompt):
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("\nGenerating llm text....\n")
+
+        prompt = f"""### Instruction:
+                    Generate a response to the question given in Input.
+                    ### Input:
+                    {sub_prompt}
+
+                    ### Response:
+                    """
+        input_ids = self.tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.to(device)
+
+        outputs = self.model.generate(
+            input_ids=input_ids,
+            max_new_tokens=max_new_tokens,
+            do_sample=True,
+            top_p=0.9,
+            temperature=TEMP_QA,
+            pad_token_id=self.model.config.eos_token_id,
+            attention_mask=torch.ones_like(input_ids)
+        )
+
+        gen_full = self.tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
+        return gen_full
+
+
+
+    def get_LLM_from_fol(self, logical_form):
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        print("\nGenerating llm text from FOL....")
+        print(f"subprompt: {logical_form}\n")
+
+        prompt = f"""### Instruction:
+                            Use the Input below to create a sentence in expressive english, which could have been used to generate the Input logical form.
+                            ### Input:
+                            {logical_form}
+
+                            ### Response:
+                            """
+
+        input_ids = self.tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.to(device)
+
+        outputs = self.model.generate(
+            input_ids=input_ids,
+            max_new_tokens=max_new_tokens,
+            do_sample=True,
+            top_p=0.9,
+            temperature=TEMP_FOL,
+            pad_token_id=self.model.config.eos_token_id,
+            attention_mask=torch.ones_like(input_ids)
+        )
+
+        gen_full = self.tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
+        gen = gen_full.split("#")[0]
+        gen = gen.strip()
+
+        return gen
+
 
 
     def set_start_time(self):
