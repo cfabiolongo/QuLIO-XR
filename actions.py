@@ -214,6 +214,8 @@ class LF_PREP(Belief): pass
 
 class ALL(Belief): pass
 
+class PREXR(Belief): pass
+
 class log(Action):
     """log direct assertions from keyboard"""
     def execute(self, *args):
@@ -247,11 +249,8 @@ class preprocess_onto(Action):
     """Producting beliefs to feed the Ontology Builder"""
 
     def execute(self, *args):
-        type = str(args[0]())
 
         print("\n--------- NEW ONTOLOGY ---------\n ")
-        print("type: " + type + "\n")
-
         deps = parser.get_last_deps()
         ners = parser.get_last_ner()
         print("NER: ", ners)
@@ -1568,6 +1567,7 @@ class submit_sparql(Action):
             # Rimuovi duplicati
             unique_names = list(set(names))
             print(unique_names)
+            self.assert_belief(PREXR(unique_names))
 
 
 class submit_intr_explo_sparql(Action):
