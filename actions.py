@@ -5,6 +5,7 @@ from phidias.Types import *
 import configparser
 from datetime import datetime
 from owlready2 import *
+import re
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -1733,15 +1734,16 @@ class feed_who_cop_query_sparql(Action):
         val_x = str(arg4).split("'")[1] # Who
 
         val_y = str(arg5).split("'")[3]
-        val_y = val_y.split(":")[0][:-2]
+        val_y = re.sub(r'\d+', '', val_y).replace(":", "_")
 
         # +QUERY("Who is Colonel West?")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?{val_x} WHERE "+"{ "
-        q = q + f"?i rdf:type ?{val_x}. FILTER(STRSTARTS(str(?i), str(lodo:{val_y}))) "+"}"
+        q = q + f"?i rdf:type lodo:{val_y}. ?i rdf:type/rdfs:subClassOf* ?{val_x}. "+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
 
@@ -1752,7 +1754,7 @@ class feed_who_query_sparql(Action):
     def execute(self, arg1, arg2, arg3, arg4, arg5, arg6):
 
         v = str(arg1).split("'")[3]
-        verb = v.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
 
         e = str(arg2).split("'")[3]
         x = str(arg3).split("'")[3]
@@ -1761,7 +1763,7 @@ class feed_who_query_sparql(Action):
         val_x = str(arg5).split("'")[1] # Who
 
         val_y = str(arg6).split("'")[3]
-        val_y = val_y.split(":")[0][:-2]
+        val_y = re.sub(r'\d+', '', val_y).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1784,8 +1786,8 @@ class feed_where_sparql(Action):
 
         val_x = str(arg5).split("'")[3]
 
-        verb = v.split(":")[0][:-2]
-        subject = val_x.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
+        subject = re.sub(r'\d+', '', val_x).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1810,9 +1812,9 @@ class feed_where_pass_sparql(Action):
         y = str(arg4).split("'")[3]
         val_y = str(arg5).split("'")[3]
 
-        verb = v.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
 
-        object = val_y.split(":")[0][:-2]
+        object = re.sub(r'\d+', '', val_y).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1833,11 +1835,10 @@ class feed_when_sparql(Action):
         e = str(arg2).split("'")[3]
         x = str(arg3).split("'")[3]
         y = str(arg4).split("'")[3]
-
         val_x = str(arg5).split("'")[3]
 
-        verb = v.split(":")[0][:-2]
-        subject = val_x.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
+        subject = re.sub(r'\d+', '', val_x).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1862,9 +1863,8 @@ class feed_when_pass_sparql(Action):
         y = str(arg4).split("'")[3]
         val_y = str(arg5).split("'")[3]
 
-        verb = v.split(":")[0][:-2]
-
-        object = val_y.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
+        object = re.sub(r'\d+', '', val_y).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1888,8 +1888,8 @@ class feed_what_query_sparql(Action):
         y = str(arg4).split("'")[3]
         y_value = str(arg5).split("'")[3]
 
-        verb = v.split(":")[0][:-2]
-        subject = y_value.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
+        subject = re.sub(r'\d+', '', y_value).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1915,9 +1915,9 @@ class feed_query_sparql(Action):
         val_x = str(arg5).split("'")[3]
         val_y = str(arg6).split("'")[3]
 
-        verb = v.split(":")[0][:-2]
-        subject = val_x.split(":")[0][:-2]
-        object = val_y.split(":")[0][:-2]
+        verb = re.sub(r'\d+', '', v).replace(":", "_")
+        subject = re.sub(r'\d+', '', val_x).replace(":", "_")
+        object = re.sub(r'\d+', '', val_y).replace(":", "_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1925,7 +1925,6 @@ class feed_query_sparql(Action):
         # +QUERY("Colonel West sells missiles?")
 
         q = p + " ASK WHERE { "
-
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type lodo:{subject}. ?{y} rdf:type lodo:{object}."+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
@@ -1941,8 +1940,8 @@ class feed_cop_sparql(Action):
         val_x = str(arg4).split("'")[3]
         val_y = str(arg5).split("'")[3]
 
-        subject = val_x.split(":")[0][:-2]
-        object = val_y.split(":")[0][:-2]
+        subject = re.sub(r'\d+', '', val_x).replace(":","_")
+        object = re.sub(r'\d+', '', val_y).replace(":","_")
 
         p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -1961,14 +1960,13 @@ class feed_cop_prep_sparql(Action):
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
         y = str(arg3).split("'")[3]
-
         p = str(arg4).split("'")[3]
-        prep = p.split(":")[0][:-2]
-
         prep_obj = str(arg5).split("'")[3]
-
         prep_obj_val = str(arg6).split("'")[3]
-        prep_obj_val = prep_obj_val.split(":")[0][:-2]
+
+        prep = re.sub(r'\d+', '', p).replace(":", "_")
+        prep_obj = re.sub(r'\d+', '', prep_obj).replace(":", "_")
+        prep_obj_val = re.sub(r'\d+', '', prep_obj_val).replace(":", "_")
 
         q = str(arg7).split("'")[3][:-1]
 
@@ -1987,14 +1985,12 @@ class feed_prep_sparql(Action):
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
         y = str(arg3).split("'")[3]
-
-        p = str(arg4).split("'")[3]
-        prep = p.split(":")[0][:-2]
-
         prep_obj = str(arg5).split("'")[3]
-
         prep_obj_val = str(arg6).split("'")[3]
-        prep_obj_val = prep_obj_val.split(":")[0][:-2]
+        prep = str(arg4).split("'")[3]
+
+        prep = re.sub(r'\d+', '', prep).replace(":", "_")
+        prep_obj_val = re.sub(r'\d+', '', prep_obj_val).replace(":", "_")
 
         q = str(arg7).split("'")[3][:-1]
 
@@ -2013,11 +2009,11 @@ class feed_adj_sparql(Action):
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
         y = str(arg3).split("'")[3]
-
         target = str(arg4).split("'")[3]
-
         adj = str(arg5).split("'")[3]
-        adj = adj.split(":")[0][:-2]
+
+        target = re.sub(r'\d+', '', target).replace(":", "_")
+        adj = re.sub(r'\d+', '', adj).replace(":", "_")
 
         q = str(arg6).split("'")[3][:-1]
 
@@ -2038,9 +2034,9 @@ class feed_adv_sparql(Action):
         e = str(arg1).split("'")[3]
         x = str(arg2).split("'")[3]
         y = str(arg3).split("'")[3]
-
         adv = str(arg4).split("'")[3]
-        adv = adv.split(":")[0][:-2]
+
+        adv = re.sub(r'\d+', '', adv).replace(":", "_")
 
         q = str(arg5).split("'")[3][:-1]
 
@@ -2059,7 +2055,7 @@ class join_cmps(Action):
         val1 = str(arg2).split("'")[3]
         val2 = str(arg3).split("'")[3]
 
-        new_var = val2.split(":")[0][:-2]+"_"+val1
+        new_var = val2+"_"+val1
         self.assert_belief(MST_VAR(var, new_var))
 
 
