@@ -14,7 +14,7 @@ proc_logform(X) >> [show_line("\nLaunching explorative query SPARQL: ", X), log(
 # seek_prep(V), seek_adj(S), seek_prep(S), seek_adj(O), seek_prep(O)
 
 #  seek_adj(S), seek_adj(O), seek_prep(S), seek_prep(V), seek_adv(V)
-proc_logform() / VF(I, V, S, O) >> [show_line(f"\nProc. ",I,"..."), -VF(I, V, S, O), +LF_ORIGIN(I, V, S, O), build_pre(I, V, S, O), seek_prep(V), proc_logform()]
+proc_logform() / VF(I, V, S, O) >> [show_line(f"\nProc. ",I,"..."), -VF(I, V, S, O), +LF_ORIGIN(I, V, S, O), build_pre(I, V, S, O), proc_logform()]
 
 # subject/object related adjective
 proc_logform() / (LF_ORIGIN(I, V, X, Y) & LF_ADJ(I, X, A) & PRE_LF(I, E, S, O)) >> [show_line(f"\nProc. adj. sub:",A), -LF_ADJ(I, X, A), -PRE_LF(I, E, S, O), join_adj_subj(I, E, S, O, A), proc_logform()]

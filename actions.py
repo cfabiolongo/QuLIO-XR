@@ -1592,11 +1592,11 @@ class submit_intr_explo_sparql(Action):
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?i ?s"+" WHERE { "
-        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}."+"}"
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Intransitive. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}."+"}"
 
         result = list(graph.query(q))
 
-        # print("\nResult: ", result)
+        print("\nIntransitive verb result: ", result)
 
         for item in result:
             verb = str(item).split(",")[0]
@@ -1694,11 +1694,11 @@ class submit_explo_sparql(Action):
         p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
 
         q = p + f" SELECT ?i ?s ?o"+" WHERE { "
-        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Verb. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
+        q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Transitive. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
 
         result = list(graph.query(q))
 
-        # print("\nResult: ", result)
+        print("\nTransitive verb result: ", result)
 
         for item in result:
             verb = str(item).split(",")[0]
@@ -2070,9 +2070,18 @@ class build_pre(Action):
     def execute(self, arg1, arg2, arg3, arg4):
 
         id = str(arg1).split("'")[3]
-        verb = str(arg2).split("'")[3].split(".")[0]+"("
-        sub = str(arg3).split("'")[3].split(".")[0]
-        obj = str(arg4).split("'")[3].split(".")[0]+")"
+        verb = str(arg2).split("'")[3]
+        sub = str(arg3).split("'")[3]
+        obj = str(arg4).split("'")[3]
+
+        print(id)
+        print(verb)
+        print(sub)
+        print(obj)
+
+        verb = verb.split(".")[0] + "("
+        sub = sub.split(".")[0]
+        obj = obj.split(".")[0] + ")"
 
         self.assert_belief(PRE_LF(id, verb, sub, obj))
 
