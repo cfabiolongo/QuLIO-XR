@@ -229,7 +229,100 @@ In such a case, by invoking the reasoner (Hermit/Pellet) will infer that *Robins
 
 ### Reasoning (shell)
 
------> to be added soon!
+---------------
+
+By asserting the belief QUERY it is possibile to test the framework for each type of question (Polar/Wh-question) and
+also for checking membership of single individuals.
+
+#### Polar questions
+
+---------------
+
+* Copular verb
+
+```sh
+eShell: main >+QUERY("Colonel West is American?")
+```
+
+* Non-copular verb
+
+```sh
+eShell: main >+QUERY("Colonel sells missiles to Nono?")
+```
+
+#### *WHO* questions 
+
+---------------
+
+* Copular
+
+```sh
+eShell: main >+QUERY("Who is Colonel West?")
+```
+
+* Transitive
+
+```sh
+eShell: main >+QUERY("Who joins the group?")
+```
+
+* Intransitive
+
+```sh
+eShell: main >+QUERY("Who invented the telephone?")
+```
+
+
+#### *WHAT* questions
+
+---------------
+
+```sh
+eShell: main >+QUERY("What does Colonel West sell?")
+```
+
+
+#### *WHERE* questions 
+
+---------------
+
+* Intransitive
+
+```sh
+eShell: main >+QUERY("Where does Colonel West live?")
+```
+
+* Passive
+
+```sh
+eShell: main >+QUERY("Where Colonel West was born?")
+```
+
+#### *WHEN* questions 
+
+---------------
+
+* Active
+
+```sh
+eShell: main >+QUERY("When does Colonel West leave?")
+```
+
+* Passive
+
+
+```sh
+eShell: main >+QUERY("When Colonel West was born?")
+```
+
+
+#### *Exlorative* query 
+
+---------------
+
+
+
+
 
 ### Reasoning (RESTful)
 
