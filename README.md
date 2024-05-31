@@ -244,7 +244,7 @@ also for checking membership of single individuals.
 eShell: main >+QUERY("Colonel West is American?")
 ```
 
-* **Non-Copular verb**: such questions will be translated in a pure graph matching query. For instance: 
+* **Non-Copular verb**: such questions will be translated into a trivial graph matching query. For instance: 
 
 ```sh
 eShell: main >+QUERY("Colonel sells missiles to Nono?")
