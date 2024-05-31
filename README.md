@@ -238,13 +238,13 @@ also for checking membership of single individuals.
 
 ---------------
 
-* **Copular verb**: such questions, by assuming antecedent usage of *assignment rules*, will check for the membership of a noun (also after OWL reasoning). For instance:
+* **Copular verb**: such questions, by assuming usage of *assignment rules* during the ontology population, will check for the membership of a noun (also after OWL reasoning). For instance:
 
 ```sh
 eShell: main >+QUERY("Colonel West is American?")
 ```
 
-* Non-copular verb
+* **Non-Copular verb**: such questions will be translated in a pure graph matching query. For instance: 
 
 ```sh
 eShell: main >+QUERY("Colonel sells missiles to Nono?")
@@ -254,7 +254,7 @@ eShell: main >+QUERY("Colonel sells missiles to Nono?")
 
 ---------------
 
-* Copular
+* **Copular**: similarly for Polar/Copular, such question will be translated to a Sparql query which search for all membership destination of the noun. For instance:
 
 ```sh
 eShell: main >+QUERY("Who is Colonel West?")
