@@ -269,13 +269,6 @@ eShell: main >+QUERY("Who is Colonel West?")
 eShell: main >+QUERY("Who joins the group?")
 ```
 
-* **Intransitive**: such *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) searching for subject destinations for a noun which is passive subject. For instance:  
-
-```sh
-eShell: main >+QUERY("Who invented the telephone?")
-```
-
-
 #### *WHAT* questions
 
 ---------------
