@@ -238,7 +238,7 @@ also for checking membership of single individuals.
 
 ---------------
 
-* Copular verb
+* **Copular verb**: such questions, by assuming antecedent usage of *assignment rules*, will check for the membership of a noun (also after OWL reasoning). For instance:
 
 ```sh
 eShell: main >+QUERY("Colonel West is American?")
@@ -319,6 +319,13 @@ eShell: main >+QUERY("When Colonel West was born?")
 #### *Exlorative* query 
 
 ---------------
+
+This special query enable the extraction of the knowledge from the ontology, related to the entity given as argument of the belief Q. 
+The extracted knowlegde (also after OWL inference) will be encoded in logical form and given to the LLM for LF-to-NL translation. For instance:
+
+```sh
+eShell: main >+Q("Colonel West")
+```
 
 
 
