@@ -236,6 +236,9 @@ also for checking membership of single individuals.
 
 #### Polar questions
 
+Polar question will be translated into a SPARQL queries whom begin with the construct *ASK*, by returning as response either *True* or *False*. 
+Such question may involve verbs either **Copular** (e.g. *to be*) or **Non-Copular**.
+
 ---------------
 
 * **Copular verb**: such questions, by assuming usage of *assignment rules* during the ontology population, will check for the membership of a noun (also after OWL reasoning). For instance:
