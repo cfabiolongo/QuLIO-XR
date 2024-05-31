@@ -257,19 +257,19 @@ eShell: main >+QUERY("Colonel sells missiles to Nono?")
 
 ---------------
 
-* **Copular**: similarly for Polar/Copular, such question will be translated to a Sparql query which search for all membership destination of the noun. For instance:
+* **Copular**: similarly for Polar/Copular, *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) whom search for all membership destinations for a noun. For instance:
 
 ```sh
 eShell: main >+QUERY("Who is Colonel West?")
 ```
 
-* Transitive
+* **Transitive**: such *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) whom search for subject destinations for a noun. For instance:
 
 ```sh
 eShell: main >+QUERY("Who joins the group?")
 ```
 
-* Intransitive
+* **Intransitive**: such *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) searching for subject destinations for a noun which is passive subject. For instance:  
 
 ```sh
 eShell: main >+QUERY("Who invented the telephone?")
