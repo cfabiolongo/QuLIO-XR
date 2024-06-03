@@ -23,7 +23,7 @@ start() >> [show_line("\n--- Starting RESTful agent...\n"), +MODE(AGENT_MODE)]
 
 +Q(X) >> [reset_ct(), show_ct(), +ALL(X), feed_sparql()]
 +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_sparql()]
-#+QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps()]
+# +QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps()]
 
 # testing rules
 +FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"),  +LISTEN("TEST")]

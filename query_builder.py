@@ -15,12 +15,10 @@ feed_sparql() / (MST_VAR(X, Y) & MST_BIND(Y, Z)) >> [show_line("\nModelling MTS_
 feed_sparql() / (MST_VAR(X, Y) & MST_COMP(Y, Z)) >> [show_line("\nJoining compound..."), -MST_VAR(X, Y), -MST_COMP(Y, Z), join_cmps(X, Y, Z), feed_sparql()]
 
 # ----- WHO questions -----
-# Active - copular (e.g. Who is Colonel West?)
+# Copular (e.g. Who is Colonel West? )
 feed_sparql() / (MST_ACT("Be01:VBZ", E, X, Y) & MST_VAR(Y, "Who01:WP") & MST_VAR(X, Z)) >> [show_line("\nWHO (copular, active) detected..."), -MST_ACT("Be01:VBZ", E, X, Y), -MST_VAR(Y, "Who01:WP"), -MST_VAR(X, Z), feed_who_cop_query_sparql(E, X, Y, "Who", Z), feed_sparql(), finalize_sparql()]
-# Active (e.g. Who joins the group?)
+# Transitive (e.g. Who joins the group? Who submitted the article?)
 feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(X, "Who01:WP") & MST_VAR(Y, Z)) >> [show_line("\nWHO (active) detected..."), -MST_ACT(V, E, X, Y), -MST_VAR(X, "Who01:WP"), -MST_VAR(Y, Z), feed_who_query_sparql(V, E, X, Y, "Who", Z), feed_sparql(), finalize_sparql()]
-# Passive (e.g. Who invented the telephone?)
-feed_sparql() / (MST_ACT(V, E, X, Y) & MST_VAR(X, "?") & MST_VAR(Y, "Who01:WP")) >> [show_line("\nWHO (passive) detected..."), -MST_ACT(X, Y, Z, T), -MST_VAR(Z, W), -MST_VAR(T, "Who01:WP"), feed_who_query_sparql(V, E, Y, X, "Who", W), feed_sparql(), finalize_sparql()]
 
 # ----- WHAT questions -----
 # (e.g. What does Colonel West sell?)
