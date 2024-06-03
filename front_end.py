@@ -18,20 +18,20 @@ c5() >> [+FEED("When an American sells weapons to a hostile nation, that America
 start() >> [show_line("\n--- Starting RESTful agent...\n"), +MODE(AGENT_MODE)]
 
 +Q(X) / MODE("LLM") >> [reset_ct(), show_ct(), +ALL(X), feed_sparql()]
-+QUERY(X) / MODE("LLM") >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_sparql(), show_ct()]
-#+QUERY(X) / MODE("LLM") >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), show_ct()]
++QUERY(X) / MODE("LLM") >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_sparql()]
+#+QUERY(X) / MODE("LLM") >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps()]
 
 +Q(X) >> [reset_ct(), show_ct(), +ALL(X), feed_sparql()]
-+QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_sparql(), show_ct()]
-#+QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), show_ct()]
++QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_sparql()]
+#+QUERY(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps()]
 
 # testing rules
-+FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"), show_ct(), +LISTEN("TEST")]
++FEED(X) >> [reset_ct(), parse_rules(X, "DISOK"), parse_deps(), feed_mst(), +PROCESS_STORED_MST("OK"),  +LISTEN("TEST")]
 +PROCESS_STORED_MST("OK") / LISTEN("TEST") >> [show_line("\nGot it.\n"), create_onto(), process_rule(), -LISTEN("TEST")]
 +PROCESS_STORED_MST("OK") / REASON("TEST") >> [show_line("\nProcessing query.....\n"), create_sparql(), -REASON("TEST")]
 
 # Nominal ontology assertion --> single: FULL", "ONE" ---  multiple: "BASE", "MORE"
-+PROCESS_STORED_MST("OK") / LISTEN("ON") >> [show_line("\nGot it.\n"), create_onto(), process_rule()]
++PROCESS_STORED_MST("OK") / LISTEN("ON") >> [show_line("\nGot it.\n"), create_onto(), process_rule(), show_ct()]
 # processing rule
 process_rule() / IS_RULE("TRUE") >> [show_line("\n------> rule detected!\n"), -IS_RULE("TRUE"), create_onto("RULE")]
 

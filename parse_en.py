@@ -137,7 +137,7 @@ class Parse(object):
         print("\nGenerating llm text....\n")
 
         prompt = f"""
-        You are a virtual assistant. Give back an answer {response} to the question: {query}
+        You are a virtual assistant. Give back {response} to the question: {query}
         """
 
         input_ids = self.tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.to(device)
