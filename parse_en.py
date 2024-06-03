@@ -42,6 +42,9 @@ adapter_name2 = config.get('LLM', 'ADAPTER_NAME2')
 adapter_path1 = config.get('LLM', 'ADAPTER_PATH1')
 adapter_path2 = config.get('LLM', 'ADAPTER_PATH2')
 
+FORCED_ANSWER_FROM_LLM = config.get('LLM', 'FORCED_ANSWER_FROM_LLM')
+REPLACER = config.get('LLM', 'REPLACER')
+
 
 
 

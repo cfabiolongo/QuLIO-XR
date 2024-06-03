@@ -2163,6 +2163,9 @@ class llm_get(Action):
         # print(args)
         response = str(args).split("'")[3]
         query = str(args).split("'")[7]
+        if len(response) == 0 and FORCED_ANSWER_FROM_LLM:
+            response = REPLACER
+            print("\nForcing response from LLM...")
         result = parser.get_SPARQL_driven_LLM(response, query)
         print(result)
 
