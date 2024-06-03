@@ -312,7 +312,7 @@ eShell: main >+QUERY("When Colonel West was born?")
 ```
 
 
-#### *Exlorative* query 
+#### *Explorative* query 
 
 ---------------
 

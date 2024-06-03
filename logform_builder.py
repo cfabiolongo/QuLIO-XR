@@ -31,3 +31,5 @@ proc_logform() / (LF_ORIGIN(I, V, X, Y) & LF_PREP(I, Y, P, K) & PRE_LF(I, E, S, 
 proc_logform() / (PRE_LF(I, V, S, O) & LF_ADV(I, A)) >> [show_line(f"\nProc. adv. ",A,"..."), -LF_ADV(I, A), proc_logform()]
 
 proc_logform() / (LF_ORIGIN(I, V, X, Y) & PRE_LF(I, E, S, O)) >> [show_line(f"\nEnd of operations related to ",I,"."), -LF_ORIGIN(I, V, X, Y), -PRE_LF(I, E, S, O), build_pre_lf(E, S, O), proc_logform()]
+
++LF(X) >> [show_line(f"\nConverting ",X," in natural language..."), -LF(X), fol_to_nl_get(X)]

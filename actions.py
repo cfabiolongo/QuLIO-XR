@@ -2165,3 +2165,10 @@ class llm_get(Action):
         query = str(args).split("'")[7]
         result = parser.get_SPARQL_driven_LLM(response, query)
         print(result)
+
+class fol_to_nl_get(Action):
+    """get LLM result"""
+    def execute(self, arg):
+        fol = str(arg).split("'")[3]
+        result = parser.get_LLM_from_fol(fol)
+        print(result)
