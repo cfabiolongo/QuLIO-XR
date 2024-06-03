@@ -26,7 +26,7 @@ FILE_NAME = config.get('AGENT', 'FILE_NAME')
 
 # REASONING Section
 REASONING_ACTIVE = config.getboolean('REASONING', 'ACTIVE')
-REASONER = config.get('REASONING', 'REASONER').split(",")
+REASONER = config.get('REASONING', 'REASONER')
 PREFIXES = config.get('REASONING', 'PREFIXES').split(",")
 PREFIX = " ".join(PREFIXES)
 PREFIX = PREFIX + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
@@ -127,6 +127,8 @@ class finalize_onto(Procedure): pass
 class create_ner(Procedure): pass
 class valorize(Procedure): pass
 
+class start(Procedure): pass
+
 # initialize Clauses Kb
 # mode reactors
 class LISTEN(Belief): pass
@@ -221,7 +223,10 @@ class LF_PREP(Belief): pass
 
 class ALL(Belief): pass
 
-class PREXR(Belief): pass
+class PREXR(Reactor): pass
+
+class MODE(Belief): pass
+
 
 class log(Action):
     """log direct assertions from keyboard"""
@@ -1559,7 +1564,7 @@ class submit_sparql(Action):
         else:
 
             names = []
-            EXCLUDED = ['Class', 'NamedIndividual']
+            EXCLUDED = ['Class', 'NamedIndividual', 'Entity', 'Thing']
 
             for item in result:
                 item = str(item).split("#")[1]
@@ -1567,9 +1572,11 @@ class submit_sparql(Action):
                 if item_filtered not in EXCLUDED:
                     names.append(item_filtered)
 
-            # Rimuovi duplicati
-            unique_names = list(set(names))
-            print(unique_names)
+            # Removing duplicates
+            unique_names_list = list(set(names))
+            # Shifting list to string
+            unique_names = ", ".join(unique_names_list)
+
             self.assert_belief(PREXR(unique_names))
 
 
@@ -2160,6 +2167,7 @@ class build_pre_lf(Action):
 class llm_get(Action):
     """get LLM result"""
     def execute(self, *args):
-        a = str(args).split("'")[5]
-        result = parser.get_LLM(a)
+        response = str(args).split("'")[3]
+        query = str(args).split("'")[7]
+        result = parser.get_SPARL_driven_LLM(response, query)
         print(result)

@@ -29,6 +29,7 @@ OBJ_JJ_TO_NOUN = config.getboolean('POS', 'OBJ_JJ_TO_NOUN')
 LEMMATIZATION = config.getboolean('PARSING', 'LEMMATIZATION')
 
 
+AGENT_MODE = config.get('LLM', 'MODE')
 TEMP_FOL = float(config.get('LLM', 'TEMP_FOL'))
 TEMP_QA = float(config.get('LLM', 'TEMP_QA'))
 max_new_tokens = int(config.get('LLM', 'MAX_NEW_TOKENS'))
@@ -129,7 +130,34 @@ class Parse(object):
         self.start_time = 0
 
 
+
+    def get_SPARL_driven_LLM(self, response, query):
+        """Give back a SPARQL-driven LLM response response """
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("\nGenerating llm text....\n")
+
+        prompt = f"""
+        You are a virtual assistant. Give back an answer to the question {query}. The question must include: {response}:
+        """
+
+        input_ids = self.tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.to(device)
+
+        outputs = self.model.generate(
+            input_ids=input_ids,
+            max_new_tokens=max_new_tokens,
+            do_sample=True,
+            top_p=0.9,
+            temperature=TEMP_QA,
+            pad_token_id=self.model.config.eos_token_id,
+            attention_mask=torch.ones_like(input_ids)
+        )
+
+        gen_full = self.tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
+        return gen_full
+
+
     def get_LLM(self, sub_prompt):
+        """Give back an LLM-only response """
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("\nGenerating llm text....\n")
 
@@ -158,6 +186,7 @@ class Parse(object):
 
 
     def get_LLM_from_fol(self, logical_form):
+        """Give back an LF-to-NL response """
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
