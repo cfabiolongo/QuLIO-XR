@@ -232,7 +232,8 @@ In such a case, by invoking the reasoner (Hermit/Pellet) will infer that *Robins
 ---------------
 
 By asserting the belief QUERY it is possibile to test the framework for each type of question (Polar/Wh-question) and
-also for checking membership of single individuals.
+also for checking membership of single individuals, also after OWL inference (by setting ACTIVE=*true* in Section [REASONING] of config.ini). For non-polar questions, To force the LLM
+to answer anyway from its trained/pretrained knowledge, set FORCED_ANSWER_FROM_LLM = *true* (Section LLM) and REPLACER = *whatever* (or other equivalent word). For instance:
 
 #### Polar questions
 
@@ -257,9 +258,8 @@ eShell: main >+QUERY("Colonel sells missiles to Nono?")
 
 ---------------
 
-*Who*-questions, copular or non-copular form, will be translated into SPARQL queries begininhg with the construct *SELECT*, by returning as response either 
-*something* or *blank* (corresponding to *unknown* in the open-world assumption). To force the LLM to answer anyway from its trained/pretrained knowledge, set 
-FORCED_ANSWER_FROM_LLM = *true* (Section LLM) and REPLACER = *whatever* (or other equivalent word). For instance:
+*Who*-questions, in copular or transitive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
+*something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
 
 * **Copular**: similarly for Polar/Copular, *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) whom search for all membership destinations for a noun. For instance:
 
@@ -277,6 +277,9 @@ eShell: main >+QUERY("Who joins the group?")
 
 ---------------
 
+*What*-questions will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
+*something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
+
 ```sh
 eShell: main >+QUERY("What does Colonel West sell?")
 ```
@@ -285,6 +288,9 @@ eShell: main >+QUERY("What does Colonel West sell?")
 #### *WHERE* questions 
 
 ---------------
+
+*Where*-questions, in either intransitive or passive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
+*something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
 
 * Intransitive
 
@@ -302,7 +308,10 @@ eShell: main >+QUERY("Where Colonel West was born?")
 
 ---------------
 
-* Active
+*When*-questions, in either intransitive or passive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
+*something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
+
+* Intransitive
 
 ```sh
 eShell: main >+QUERY("When does Colonel West leave?")
@@ -326,9 +335,6 @@ The extracted knowlegde (also after OWL inference) will be encoded in logical fo
 ```sh
 eShell: main >+Q("Colonel West")
 ```
-
-
-
 
 
 ### Reasoning (RESTful)
