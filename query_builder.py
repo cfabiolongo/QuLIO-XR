@@ -71,7 +71,7 @@ finalize_sparql() / (PRE_SPARQL(E, X, Y, Q) & MST_VAR(E, D)) >> [show_line("\nAd
 # finalizing sparql
 finalize_sparql() / PRE_SPARQL(E, X, Y, Q) >> [show_line("\nFinalizing SPARQL..."), -PRE_SPARQL(E, X, Y, Q), +SPARQL(Q)]
 
-+SPARQL(X) >> [show_line("\nQuery SPARQL built: \n", X), log("SPARQL: ", X), submit_sparql(X)]
-+PREXR(X) / QUERY(Y) >> [show_line("\nPre-expressive response: \n", X), log("PREXR: ", X), -QUERY(Y), llm_get(X, Y)]
++SPARQL(X) >> [show_line("\nQuery SPARQL built: \n", X), submit_sparql(X)]
++PREXR(X) / QUERY(Y) >> [show_line("\nPre-expressive response: \n", X), -QUERY(Y), llm_get(X, Y)]
 
 

@@ -131,13 +131,13 @@ class Parse(object):
 
 
 
-    def get_SPARL_driven_LLM(self, response, query):
+    def get_SPARQL_driven_LLM(self, response, query):
         """Give back a SPARQL-driven LLM response response """
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("\nGenerating llm text....\n")
 
         prompt = f"""
-        You are a virtual assistant. Give back an answer to the question {query}. The question must include: {response}:
+        You are a virtual assistant. Give back an answer {response} to the question: {query}
         """
 
         input_ids = self.tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.to(device)

@@ -228,15 +228,6 @@ class PREXR(Reactor): pass
 class MODE(Belief): pass
 
 
-class log(Action):
-    """log direct assertions from keyboard"""
-    def execute(self, *args):
-        a = str(args).split("'")
-
-        if LOG_ACTIVE:
-            with open("log.txt", "a") as myfile:
-                myfile.write("\n"+a[1]+": "+a[5])
-
 
 
 
@@ -1561,6 +1552,8 @@ class submit_sparql(Action):
 
         if (True in result) or (False in result):
             print("\nResult: ", result)
+            res="'"+str(result[0])+"'"
+            self.assert_belief(PREXR(res))
         else:
 
             names = []
@@ -2167,7 +2160,8 @@ class build_pre_lf(Action):
 class llm_get(Action):
     """get LLM result"""
     def execute(self, *args):
+        # print(args)
         response = str(args).split("'")[3]
         query = str(args).split("'")[7]
-        result = parser.get_SPARL_driven_LLM(response, query)
+        result = parser.get_SPARQL_driven_LLM(response, query)
         print(result)
