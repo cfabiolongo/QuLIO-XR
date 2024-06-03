@@ -24,6 +24,13 @@ WAIT_TIME = config.getint('AGENT', 'WAIT_TIME')
 LOG_ACTIVE = config.getboolean('AGENT', 'LOG_ACTIVE')
 FILE_NAME = config.get('AGENT', 'FILE_NAME')
 
+# REASONING Section
+REASONING_ACTIVE = config.getboolean('REASONING', 'ACTIVE')
+REASONER = config.get('REASONING', 'REASONER').split(",")
+PREFIXES = config.get('REASONING', 'PREFIXES').split(",")
+PREFIX = " ".join(PREFIXES)
+PREFIX = PREFIX + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
+
 INCLUDE_ACT_POS = config.getboolean('POS', 'INCLUDE_ACT_POS')
 INCLUDE_NOUNS_POS = config.getboolean('POS', 'INCLUDE_NOUNS_POS')
 INCLUDE_ADJ_POS = config.getboolean('POS', 'INCLUDE_ADJ_POS')
@@ -1443,19 +1450,17 @@ class seek_prep(Action):
         subject = str(arg1).split("'")[3]
         print(subject)
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?prep ?obj"+" WHERE { "
+        q = PREFIX + f" SELECT ?prep ?obj"+" WHERE { "
         q = q + f"lodo:{subject} lodo:hasPrep ?prep. ?prep lodo:hasObject ?obj. "+"}"
 
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
         result = list(graph.query(q))
@@ -1482,19 +1487,17 @@ class seek_adj(Action):
         subject = str(arg1).split("'")[3]
         print(subject)
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?adj"+" WHERE { "
+        q = PREFIX + f" SELECT ?adj"+" WHERE { "
         q = q + f"lodo:{subject} lodo:hasAdj ?adj. "+"}"
 
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values=True, infer_data_property_values=True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
         result = list(graph.query(q))
@@ -1512,19 +1515,17 @@ class seek_adv(Action):
         subject = str(arg1).split("'")[3]
         print(subject)
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?adv"+" WHERE { "
+        q = PREFIX + f" SELECT ?adv"+" WHERE { "
         q = q + f"lodo:{subject} lodo:hasAdv ?adv. "+"}"
 
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        # sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values=True, infer_data_property_values=True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
         result = list(graph.query(q))
@@ -1544,9 +1545,11 @@ class submit_sparql(Action):
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values=True, infer_data_property_values=True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
         result = list(graph.query(query))
@@ -1579,19 +1582,17 @@ class submit_intr_explo_sparql(Action):
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values=True, infer_data_property_values=True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
 
         # +Q("Colonel_NNP_West_NNP")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?i ?s"+" WHERE { "
+        q = PREFIX + f" SELECT ?i ?s"+" WHERE { "
         q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Intransitive. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}."+"}"
 
         result = list(graph.query(q))
@@ -1624,19 +1625,17 @@ class submit_explo_membership(Action):
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values=True, infer_data_property_values=True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
 
         # +Q("Colonel_NNP_West_NNP")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?t"+" WHERE { "
+        q = PREFIX + f" SELECT ?t"+" WHERE { "
         q = q + f"?i rdf:type lodo:{subject}. ?i rdf:type ?t. "+"}"
 
         result = list(graph.query(q))
@@ -1681,19 +1680,17 @@ class submit_explo_sparql(Action):
         my_world = owlready2.World()
         my_world.get_ontology(FILE_NAME).load()  # path to the owl file is given here
 
-        #sync_reasoner_pellet(my_world, infer_property_values = True, infer_data_property_values = True)
-        sync_reasoner_hermit(my_world, infer_property_values=True)
-        # sync_reasoner_hermit(my_world)
+        if REASONING_ACTIVE:
+            if REASONER == "PELLET":
+                sync_reasoner_pellet(my_world, infer_property_values=True, infer_data_property_values=True)
+            else:
+                sync_reasoner_hermit(my_world, infer_property_values=True)
 
         graph = my_world.as_rdflib_graph()
 
         # +Q("Colonel_NNP_West_NNP")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?i ?s ?o"+" WHERE { "
+        q = PREFIX + f" SELECT ?i ?s ?o"+" WHERE { "
         q = q + f"?i rdf:type/rdfs:subClassOf* lodo:Transitive. ?i lodo:hasSubject ?s. ?s rdf:type lodo:{subject}. ?i lodo:hasObject ?o. "+"}"
 
         result = list(graph.query(q))
@@ -1738,11 +1735,7 @@ class feed_who_cop_query_sparql(Action):
 
         # +QUERY("Who is Colonel West?")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?{val_x} WHERE "+"{ "
+        q = PREFIX + f" SELECT ?{val_x} WHERE "+"{ "
         q = q + f"?i rdf:type lodo:{val_y}. ?i rdf:type/rdfs:subClassOf* ?{val_x}. "+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
@@ -1765,10 +1758,7 @@ class feed_who_query_sparql(Action):
         val_y = str(arg6).split("'")[3]
         val_y = re.sub(r'\d+', '', val_y).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + f" SELECT ?{val_x} WHERE "+"{ "
+        q = PREFIX + f" SELECT ?{val_x} WHERE "+"{ "
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type ?{val_x}. ?{y} rdf:type lodo:{val_y}."+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
@@ -1789,12 +1779,9 @@ class feed_where_sparql(Action):
         verb = re.sub(r'\d+', '', v).replace(":", "_")
         subject = re.sub(r'\d+', '', val_x).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
         # +QUERY("Where does Colonel West live?")
 
-        q = p + " SELECT ?where WHERE { "
+        q = PREFIX + " SELECT ?where WHERE { "
 
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{x} rdf:type lodo:{subject}. ?{e} lodo:hasPrep ?p. ?p lodo:hasObject ?w. ?w rdf:type ?where. "+"}"
 
@@ -1816,12 +1803,9 @@ class feed_where_pass_sparql(Action):
 
         object = re.sub(r'\d+', '', val_y).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
         # +QUERY("Where Colonel West was born?")
 
-        q = p + " SELECT ?where WHERE { "
+        q = PREFIX + " SELECT ?where WHERE { "
 
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasObject ?{y}. ?{y} rdf:type lodo:{object}. ?{e} lodo:hasPrep ?p. ?p lodo:hasObject ?w. ?w rdf:type ?where. "+"}"
 
@@ -1840,12 +1824,9 @@ class feed_when_sparql(Action):
         verb = re.sub(r'\d+', '', v).replace(":", "_")
         subject = re.sub(r'\d+', '', val_x).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
         # +QUERY("When does Colonel West leave?")
 
-        q = p + " SELECT ?when WHERE { "
+        q = PREFIX + " SELECT ?when WHERE { "
 
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{x} rdf:type lodo:{subject}. ?{e} lodo:hasPrep ?p. ?p lodo:hasObject ?w. ?w rdf:type ?when. "+"}"
 
@@ -1866,12 +1847,9 @@ class feed_when_pass_sparql(Action):
         verb = re.sub(r'\d+', '', v).replace(":", "_")
         object = re.sub(r'\d+', '', val_y).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
         # +QUERY("When Colonel West was born?")
 
-        q = p + " SELECT ?when WHERE { "
+        q = PREFIX + " SELECT ?when WHERE { "
 
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasObject ?{y}. ?{y} rdf:type lodo:{object}. ?{e} lodo:hasPrep ?p. ?p lodo:hasObject ?w. ?w rdf:type ?when. "+"}"
 
@@ -1891,12 +1869,9 @@ class feed_what_query_sparql(Action):
         verb = re.sub(r'\d+', '', v).replace(":", "_")
         subject = re.sub(r'\d+', '', y_value).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
         # +QUERY("What does Colonel West sell?")
 
-        q = p + " SELECT ?what WHERE { "
+        q = PREFIX + " SELECT ?what WHERE { "
 
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type lodo:{subject}. ?{y} rdf:type ?what."+"}"
 
@@ -1919,12 +1894,9 @@ class feed_query_sparql(Action):
         subject = re.sub(r'\d+', '', val_x).replace(":", "_")
         object = re.sub(r'\d+', '', val_y).replace(":", "_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
         # +QUERY("Colonel West sells missiles?")
 
-        q = p + " ASK WHERE { "
+        q = PREFIX + " ASK WHERE { "
         q = q + f"?{e} rdf:type lodo:{verb}. ?{e} lodo:hasSubject ?{x}. ?{e} lodo:hasObject ?{y}. ?{x} rdf:type lodo:{subject}. ?{y} rdf:type lodo:{object}."+"}"
 
         self.assert_belief(PRE_SPARQL(e, x, y, q))
@@ -1943,10 +1915,7 @@ class feed_cop_sparql(Action):
         subject = re.sub(r'\d+', '', val_x).replace(":","_")
         object = re.sub(r'\d+', '', val_y).replace(":","_")
 
-        p = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        p = p + f"PREFIX lodo: <http://test.org/{FILE_NAME}#> "
-
-        q = p + "ASK WHERE { "
+        q = PREFIX + "ASK WHERE { "
 
         q = q + f"?{y} rdf:type lodo:{subject}. ?{y} rdf:type lodo:{object}."+"}"
 
