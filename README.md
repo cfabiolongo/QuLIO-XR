@@ -257,9 +257,9 @@ eShell: main >+QUERY("Colonel sells missiles to Nono?")
 
 ---------------
 
-*Who*-question, in the shape of copular o non-copular, will be translated into a SPARQL queries whom begin with the construct *SELECT*, by returning as response either 
-*something* or *blank* (corresponding to *unknown* in the open-world assumption). To force an answer from the LLM, set 
-FORCED_ANSWER_FROM_LLM = true (Section LLM) and REPLACER = whatever (or other equivalent words). For instance:
+*Who*-questions, copular or non-copular form, will be translated into SPARQL queries begininhg with the construct *SELECT*, by returning as response either 
+*something* or *blank* (corresponding to *unknown* in the open-world assumption). To force the LLM to answer anyway from its trained/pretrained knowledge, set 
+FORCED_ANSWER_FROM_LLM = *true* (Section LLM) and REPLACER = *whatever* (or other equivalent word). For instance:
 
 * **Copular**: similarly for Polar/Copular, *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) whom search for all membership destinations for a noun. For instance:
 
