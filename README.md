@@ -237,8 +237,8 @@ to answer anyway from its trained/pretrained knowledge, set FORCED_ANSWER_FROM_L
 
 #### Polar questions
 
-Polar question will be translated into a SPARQL queries whom begin with the construct *ASK*, by returning as response either *True* or *False*. 
-Such question may involve verbs either **Copular** (e.g. *to be*) or **Non-Copular**.
+Polar questions will be translated into SPARQL queries beginning with the construct *ASK*, by returning as response either *True* or *False*. 
+Such questions may involve verbs either **Copular** (e.g. *to be*) or **Non-Copular**.
 
 ---------------
 
