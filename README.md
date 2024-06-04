@@ -111,9 +111,10 @@ Follow the instructions reported [here](https://pytorch.org/) for the current sy
 ### Setting interaction configuration
 
 In section [LLM] of config.ini, the parameter *MODE* must be set as follows: 
-* KG (OWL inference with OWL-to-NL response)
-* LLM (only Query/Answer LLM)
-* DUAL (KG+LLM) 
+* KG (only OWL inference)
+* KGLLM (OWL inference OWL-to-NL from LLM response)
+* LLM (only LLM inference)
+* DUAL (KGLLM+LLM) 
 
 
 ### Starting agent
