@@ -261,13 +261,13 @@ eShell: main >+QUERY("Colonel sells missiles to Nono?")
 *Who*-questions, in copular or transitive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
 *something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
 
-* **Copular**: similarly for Polar/Copular, *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) whom search for all membership destinations for a noun. For instance:
+* **Copular**: similarly for Polar/Copular, *Who*-questions will be translated into SPARQL queries, searching for all membership destinations for a noun. For instance:
 
 ```sh
 eShell: main >+QUERY("Who is Colonel West?")
 ```
 
-* **Transitive**: such *Who*-questions will be translated into SPARQL queries (beginning with the *WHERE* construct) whom search for subject destinations for a noun. For instance:
+* **Transitive**: such *Who*-questions will be translated into SPARQL queries, searching for all subject destinations for a noun. For instance:
 
 ```sh
 eShell: main >+QUERY("Who joins the group?")
