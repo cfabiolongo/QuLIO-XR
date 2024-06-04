@@ -309,7 +309,8 @@ eShell: main >+QUERY("Where Colonel West was born?")
 ---------------
 
 *When*-questions, in either intransitive or passive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
-*something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
+*something* or *blank* (corresponding to *unknown* in the open-world assumption). **Important**: in case AXIOMS_WORDS = WHEN (Section [PARSING]) in config.ini, be sure to remove it after each ontology assertion.
+For instance:
 
 * **Intransitive**
 
