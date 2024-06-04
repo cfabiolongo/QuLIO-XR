@@ -292,13 +292,13 @@ eShell: main >+QUERY("What does Colonel West sell?")
 *Where*-questions, in either intransitive or passive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
 *something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
 
-* Intransitive
+* **Intransitive**
 
 ```sh
 eShell: main >+QUERY("Where does Colonel West live?")
 ```
 
-* Passive
+* **Passive**
 
 ```sh
 eShell: main >+QUERY("Where Colonel West was born?")
@@ -311,13 +311,13 @@ eShell: main >+QUERY("Where Colonel West was born?")
 *When*-questions, in either intransitive or passive form, will be translated into SPARQL queries beginning with the construct *SELECT*, by returning as response either 
 *something* or *blank* (corresponding to *unknown* in the open-world assumption). For instance:
 
-* Intransitive
+* **Intransitive**
 
 ```sh
 eShell: main >+QUERY("When does Colonel West leave?")
 ```
 
-* Passive
+* **Passive**
 
 
 ```sh
