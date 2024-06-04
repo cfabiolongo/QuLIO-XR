@@ -112,7 +112,7 @@ Follow the instructions reported [here](https://pytorch.org/) for the current sy
 
 In section [LLM] of config.ini, the parameter *MODE* must be set as follows: 
 * KG (only OWL inference)
-* KGLLM (OWL inference OWL-to-NL from LLM response)
+* KGLLM (OWL inference with LF-to-NL response)
 * LLM (only LLM inference)
 * DUAL (KGLLM+LLM) 
 
